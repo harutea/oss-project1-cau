@@ -51,34 +51,74 @@ def get_status_list(dir_path):
     status_list = {}
 
     result = os.popen('git status').read().split('\n')
-    
+
+
+    # for changes staged
     staged_index = -1
-    if 'changes to be committed:' in result:
-        staged_index = result.index('changes to be committed:')
+    if 'Changes to be committed:' in result:
+        staged_index = result.index('Changes to be committed:')
     
     staged = {}
     staged['new'] = []
     staged['modified'] = []
     staged['deleted'] = []
 
-    if staged_index not -1:
+    if not staged_index == -1:
         i = 2
-        while '\tnew file' in result[staged_index + i]:
+        while 'new file' in result[staged_index + i]:
             staged['new'].append(result[staged_index + i].split()[2])
             i = i + 1
 
-        while '\tmodified' in result[staged_index + i]:
-            staged['modified'].append(result[staged_index + i].split()[2])
+        while 'modified' in result[staged_index + i]:
+            staged['modified'].append(result[staged_index + i].split()[1])
             i = i + 1
 
-        while '\tdeleted' in result[staged_index + i]:
-            staged['deleted'].append(result[staged_index + i].split()[2])
+        while 'deleted' in result[staged_index + i]:
+            staged['deleted'].append(result[staged_index + i].split()[1])
             i = i + 1
 
-    modified_index = -1
-    if 'changes not staged for commit:' in result:
-        modified_index = result.index('changes not staged for commit:')
 
-    untacked_index = result.index('Untracked_files:')
+    # for changes not staged
+    not_staged_index = -1
+    if 'Changes not staged for commit:' in result:
+        not_staged_index = result.index('Changes not staged for commit:')
+
+    not_staged = {}
+    not_staged['new'] = []
+    not_staged['modified'] = []
+    not_staged['deleted'] = []
+
+    if not not_staged_index == -1:
+        i = 3
+        while 'new file' in result[not_staged_index + i]:
+            not_staged['new'].append(result[not_staged_index + i].split()[2])
+            i = i + 1
+
+        while 'modified' in result[not_staged_index + i]:
+            not_staged['modified'].append(result[not_staged_index + i].split()[1])
+            i = i + 1
+
+        while 'deleted' in result[not_staged_index + i]:
+            not_staged['deleted'].append(result[not_staged_index + i].split()[1])
+            i = i + 1
+
+
+    # for untracked files
+    untracked_index = -1
+    if 'Untracked files:' in result:
+        untracked_index = result.index('Untracked files:')
+    
+    untracked = []
+    
+    if not untracked_index == -1:
+        i = 2
+        while '\t' in result[untracked_index + i]:
+            untracked.append(result[untracked_index + i].split()[0])
+            i = i + 1
+    
+
+    status_list['staged'] = staged
+    status_list['not_staged'] = not_staged
+    status_list['untracked'] = untracked
 
     return status_list
