@@ -39,15 +39,35 @@ from send2trash import send2trash
 def gitstatus(self):
     return 1
 
+
+
 class statusQFileSystemModel(QFileSystemModel):
     def __init__(self):
         super(statusQFileSystemModel, self).__init__()
         self.header = ["git status", "Name", "Size", "Type", "Date modified"]
 
+
     def headerData(self, section: int, orientation: Qt.Orientation, role: int = ...) -> typing.Any:
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
             return self.header[section]
         return super().headerData(section, orientation, role)
+
+    def columnCount(self, parent: QtCore.QModelIndex = ...) -> int:
+        return super().columnCount() + 1
+
+    def data(self, index: QtCore.QModelIndex, role: int = ...) -> typing.Any:
+        if not index.isValid():
+            return super().data(index, role)
+
+        if index.column() == 0:
+            #깃 파일 상태로 추후 변경
+            return 1
+
+        if index.column() > 0 and index.column() <= 4:
+            return super().data(index.siblingAtColumn(index.column() - 1), role)
+
+        return super().data(index, role)
+
 
 #############################################################################################################################################################
 #############################################################################################################################################################
