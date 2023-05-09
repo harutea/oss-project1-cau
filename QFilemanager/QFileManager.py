@@ -16,7 +16,7 @@ import time
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.Qt import QKeySequence, QCursor, QDesktopServices
+from PyQt5.Qt import QKeySequence, QCursor, QDesktopServices 
 import findFilesWindow
 import QTextEdit
 import Qt5Player
@@ -29,6 +29,21 @@ import shutil
 import subprocess
 import stat
 from send2trash import send2trash
+
+
+#############################################################################################################################################################
+#############################################################################################################################################################
+
+def gitstatus(self):
+    return 1
+
+class statusQFileSystemModel(QFileSystemModel):
+    def __init__(self):
+        super(statusQFileSystemModel, self).__init__()
+        self.status = gitstatus(self)
+
+#############################################################################################################################################################
+#############################################################################################################################################################
 
 class helpWindow(QMainWindow):
     def __init__(self):
@@ -146,7 +161,7 @@ class myWindow(QMainWindow):
         self.tBar = self.addToolBar("Tools")
         self.tBar.setContextMenuPolicy(Qt.PreventContextMenu)
         self.tBar.setMovable(False)
-        self.tBar.setIconSize(QSize(16, 16))
+        self.tBar.setIconSize(QSize(32, 32))
         self.tBar.addAction(self.createFolderAction)
         self.tBar.addAction(self.copyFolderAction)
         self.tBar.addAction(self.pasteFolderAction)
@@ -163,10 +178,21 @@ class myWindow(QMainWindow):
         self.tBar.addAction(self.terminalAction)
         self.tBar.addSeparator()
         self.tBar.addAction(self.helpAction)
-        empty = QWidget()
-        empty.setMinimumWidth(60)
-        self.tBar.addWidget(empty)
+
+
+        # empty = QWidget()
+        # empty.setMinimumWidth(60)
+        # self.tBar.addWidget(empty)
         self.tBar.addSeparator()
+
+#############################################################################################################################################################
+#############################################################################################################################################################
+        self.tBar.addAction(self.gitinit)
+        self.tBar.addAction(self.gitcommit)
+        self.tBar.addSeparator()
+#############################################################################################################################################################
+#############################################################################################################################################################
+
         self.tBar.addAction(self.btnHome)
         self.tBar.addAction(self.btnDocuments)
         self.tBar.addAction(self.btnDownloads)
@@ -182,8 +208,12 @@ class myWindow(QMainWindow):
         self.dirModel.setReadOnly(False)
         self.dirModel.setFilter(QDir.NoDotAndDotDot | QDir.AllDirs | QDir.Drives)
         self.dirModel.setRootPath(QDir.rootPath())
-
-        self.fileModel = QFileSystemModel()
+#############################################################################################################################################################
+#############################################################################################################################################################
+        #self.fileModel = QFileSystemModel()
+        self.fileModel = statusQFileSystemModel()
+#############################################################################################################################################################
+#############################################################################################################################################################
         self.fileModel.setReadOnly(False)
         self.fileModel.setFilter(QDir.NoDotAndDotDot | QDir.AllDirs  | QDir.Files)
         self.fileModel.setResolveSymlinks(True)
@@ -196,9 +226,18 @@ class myWindow(QMainWindow):
         self.listview.setModel(self.fileModel)
         self.treeview.setRootIsDecorated(True)
 
-        self.listview.header().resizeSection(0, 320)
-        self.listview.header().resizeSection(1, 80)
+#############################################################################################################################################################
+#############################################################################################################################################################
+        # self.listview.header().resizeSection(0, 320)
+        # self.listview.header().resizeSection(1, 80)
+        # self.listview.header().resizeSection(2, 80)
+
+        self.listview.header().resizeSection(0, 20)
+        self.listview.header().resizeSection(1, 320)
         self.listview.header().resizeSection(2, 80)
+        self.listview.header().resizeSection(3, 80)
+#############################################################################################################################################################
+#############################################################################################################################################################
         self.listview.setSortingEnabled(True) 
         self.treeview.setSortingEnabled(True) 
 
@@ -308,6 +347,14 @@ class myWindow(QMainWindow):
         self.btnDownloads = QAction(QIcon.fromTheme("folder-downloads"), "downloads folder", triggered = self.goDownloads)
         self.btnVideo = QAction(QIcon.fromTheme("folder-video"), "video folder", triggered = self.goVideo)
         self.openAction = QAction(QIcon.fromTheme("system-run"), "open File",  triggered=self.openFile)
+
+#############################################################################################################################################################
+#############################################################################################################################################################
+        self.gitinit = QAction(QIcon("icons8-git-48.png"), "git init", triggered = self.init)
+        self.gitcommit = QAction(QIcon("icons8-commit-git-64.png"), "git commit", triggered = self.commit)
+#############################################################################################################################################################
+#############################################################################################################################################################
+
         self.openAction.setShortcut(QKeySequence(Qt.Key_Return))
         self.openAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.openAction) 
@@ -776,6 +823,16 @@ class myWindow(QMainWindow):
         docs = QStandardPaths.standardLocations(QStandardPaths.DownloadLocation)[0]
         self.treeview.setCurrentIndex(self.dirModel.index(docs))
         self.treeview.setFocus()
+
+#############################################################################################################################################################
+#############################################################################################################################################################    
+    def init(self):
+        pass
+
+    def commit(self):
+        pass
+#############################################################################################################################################################
+#############################################################################################################################################################
 
     def infobox(self, message):
         title = "QFilemager"
