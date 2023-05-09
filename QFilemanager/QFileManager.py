@@ -13,6 +13,8 @@ import errno
 import getpass
 import socket
 import time
+import typing
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon, QPixmap
@@ -40,7 +42,12 @@ def gitstatus(self):
 class statusQFileSystemModel(QFileSystemModel):
     def __init__(self):
         super(statusQFileSystemModel, self).__init__()
-        self.status = gitstatus(self)
+        self.header = ["git status", "Name", "Size", "Type", "Date modified"]
+
+    def headerData(self, section: int, orientation: Qt.Orientation, role: int = ...) -> typing.Any:
+        if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+            return self.header[section]
+        return super().headerData(section, orientation, role)
 
 #############################################################################################################################################################
 #############################################################################################################################################################
