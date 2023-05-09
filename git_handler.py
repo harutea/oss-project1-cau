@@ -44,3 +44,36 @@ def git_commit(dir_path, commit_msg):
     os.chdir(dir_path)
     result = os.popen('git commit -m "' + commit_msg + '"').read()
     return result
+
+def get_status_list(dir_path):
+    os.chdir(dir_path)
+
+    status_list = {}
+
+    result = os.popen('git status').read().split('\n')
+    staged_index = result.find('changes to be committed:')
+    
+    staged = {}
+    staged['new'] = []
+    staged['modified'] = []
+    staged['deleted'] = []
+
+    if staged_index not -1:
+        i = 2
+        while '\tnew file' in result[staged_index + i]:
+            staged['new'].append(result[staged_index + i])
+            i = i + 1
+
+        while '\tmodified' in result[staged_index + i]:
+            staged['modified'].append(result[staged_index + i])
+            i = i + 1
+
+        while '\tdeleted' in result[staged_index + i]:
+            staged['deleted'].append(result[staged_index + i])
+            i = i + 1
+
+    modified_index = result.index('changes not staged for commit:')
+
+    untacked_index = result.index('Untracked_files:')
+
+    return status_list
