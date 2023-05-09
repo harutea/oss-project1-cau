@@ -59,9 +59,20 @@ class statusQFileSystemModel(QFileSystemModel):
         if not index.isValid():
             return super().data(index, role)
 
-        if index.column() == 0:
+        if index.column() == 0 and role == Qt.DecorationRole:
             #깃 파일 상태로 추후 변경
-            return 1
+            i = 3
+            if i == 0:
+                return QPixmap("icon/comitted.png")
+            elif i == 1:
+                return QPixmap("icon/modified.png")
+            elif i == 2:
+                return QPixmap("icon/staged.png")
+            elif i == 3:
+                return QPixmap("icon/untracked.png")
+
+        if index.column() == 0:
+            return
 
         if index.column() > 0 and index.column() <= 4:
             return super().data(index.siblingAtColumn(index.column() - 1), role)
