@@ -51,7 +51,10 @@ def get_status_list(dir_path):
     status_list = {}
 
     result = os.popen('git status').read().split('\n')
-    staged_index = result.find('changes to be committed:')
+    
+    staged_index = -1
+    if 'changes to be committed:' in result:
+        staged_index = result.index('changes to be committed:')
     
     staged = {}
     staged['new'] = []
@@ -61,18 +64,20 @@ def get_status_list(dir_path):
     if staged_index not -1:
         i = 2
         while '\tnew file' in result[staged_index + i]:
-            staged['new'].append(result[staged_index + i])
+            staged['new'].append(result[staged_index + i].split()[2])
             i = i + 1
 
         while '\tmodified' in result[staged_index + i]:
-            staged['modified'].append(result[staged_index + i])
+            staged['modified'].append(result[staged_index + i].split()[2])
             i = i + 1
 
         while '\tdeleted' in result[staged_index + i]:
-            staged['deleted'].append(result[staged_index + i])
+            staged['deleted'].append(result[staged_index + i].split()[2])
             i = i + 1
 
-    modified_index = result.index('changes not staged for commit:')
+    modified_index = -1
+    if 'changes not staged for commit:' in result:
+        modified_index = result.index('changes not staged for commit:')
 
     untacked_index = result.index('Untracked_files:')
 
