@@ -12,7 +12,6 @@ import os
 import errno
 import getpass
 import socket
-import time
 import typing
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
@@ -31,13 +30,44 @@ import shutil
 import subprocess
 import stat
 from send2trash import send2trash
+import git_handler
+from enum import Enum
 
 
 #############################################################################################################################################################
 #############################################################################################################################################################
 
-def gitstatus(self):
-    return 1
+
+def gitTrue(file_list):
+    if len(file_list['staged']['new']) == 0 and len(file_list['staged']['modified']) == 0 and len(
+            file_list['staged']['deleted']) == 0:
+        if len(file_list['not_staged']['new']) == 0 and len(file_list['not_staged']['modified']) == 0 and len(
+                file_list['not_staged']['deleted']) == 0:
+            if len(file_list['untracked']) == 0:
+                return False
+
+    return True
+
+
+def gitstatus(file_list, file_name):
+    if not gitTrue(file_list):
+        return False
+
+    if QFileInfo(file_name).isDir():
+        return "Directory"
+
+    if file_name in file_list['staged']['new'] or file_name in file_list['staged']['modified'] or file_name in \
+            file_list['staged']['deleted']:
+        result = gitStatus.Staged
+    elif file_name in file_list['not_staged'] or file_name in file_list['not_staged']['modified'] or file_name in \
+            file_list['not_staged']['deleted']:
+        result = gitStatus.Modified
+    elif file_name in file_list['untracked']:
+        result = gitStatus.Untracked
+    else:
+        result = gitStatus.Unmodified
+
+    return result
 
 
 
@@ -61,24 +91,56 @@ class statusQFileSystemModel(QFileSystemModel):
 
         if index.column() == 0 and role == Qt.DecorationRole:
             #깃 파일 상태로 추후 변경
-            i = 3
-            if i == 0:
-                return QPixmap("icon/comitted.png")
-            elif i == 1:
-                return QPixmap("icon/modified.png")
-            elif i == 2:
-                return QPixmap("icon/staged.png")
-            elif i == 3:
-                return QPixmap("icon/untracked.png")
+
+            file_name = super().data(index, Qt.DisplayRole)
+            file_list = w.gitStatusList
+            icon = QPixmap()
+
+            ##check if git status
+
+            i = gitstatus(file_list, file_name)
+
+            if not i or i == "Directory":
+                return
+
+
+            if i == gitStatus.Unmodified:
+                icon.load(w.fileDirectories + "/icon/comitted.png")
+                return icon
+            elif i == gitStatus.Modified:
+                icon.load(w.fileDirectories + "/icon/modified.png")
+                return icon
+            elif i == gitStatus.Staged:
+                icon.load(w.fileDirectories + "/icon/staged.png")
+                return icon
+            elif i == gitStatus.Untracked:
+                icon.load(w.fileDirectories + "/icon/untracked.png")
+                return icon
+            elif i == gitStatus.Nogit:
+                return
 
         if index.column() == 0:
             return
 
-        if index.column() > 0 and index.column() <= 4:
+        if 0 < index.column() <= 4:
             return super().data(index.siblingAtColumn(index.column() - 1), role)
 
         return super().data(index, role)
 
+
+
+
+
+
+#############################################################################################################################################################
+#############################################################################################################################################################
+
+class gitStatus(Enum):
+    Unmodified = 0
+    Modified = 1
+    Staged = 2
+    Untracked = 3
+    Nogit = 4
 
 #############################################################################################################################################################
 #############################################################################################################################################################
@@ -310,6 +372,9 @@ class myWindow(QMainWindow):
         self.listview.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.listview.setIndentation(10)
         self.listview.sortByColumn(0, Qt.AscendingOrder)
+
+        self.fileDirectories = os.getcwd()
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
         print("Welcome to QFileManager")
         self.readSettings()
@@ -690,8 +755,11 @@ class myWindow(QMainWindow):
         print("refreshing view")
         index = self.listview.selectionModel().currentIndex()
         path = self.fileModel.fileInfo(index).path()
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
         self.treeview.setCurrentIndex(self.fileModel.index(path))
         self.treeview.setFocus()
+
+        #print(self.currentPath)
 
     def makeMP3(self):
         if self.listview.selectionModel().hasSelection():
@@ -753,6 +821,7 @@ class myWindow(QMainWindow):
         path = self.dirModel.fileInfo(index).absoluteFilePath()
         self.listview.setRootIndex(self.fileModel.setRootPath(path))
         self.currentPath = path
+        #self.gitStatusList = git_handler.get_status_list(self.currentPath)
         self.setWindowTitle(path)
         self.getRowCount()
 
@@ -825,6 +894,7 @@ class myWindow(QMainWindow):
             self.treeview.setFocus()
 #            self.listview.setRootIndex(self.fileModel.setRootPath(path))
             self.setWindowTitle(path)
+        #self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def goBack(self):
         index = self.listview.selectionModel().currentIndex()
