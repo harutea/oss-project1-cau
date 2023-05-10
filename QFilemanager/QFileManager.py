@@ -537,7 +537,7 @@ class myWindow(QMainWindow):
         self.findFilesAction = QAction(QIcon.fromTheme("edit-find"), "find in folder",  triggered=self.findFiles)
         self.findFilesAction.setShortcut(QKeySequence("Ctrl+f"))
         self.findFilesAction.setShortcutVisibleInContextMenu(True)
-        self.treeview.addAction(self.findFilesAction) 
+        self.treeview.addAction(self.findFilesAction)
 
         self.zipAction = QAction(QIcon.fromTheme("zip"), "create zip from folder",  triggered=self.createZipFromFolder)
         self.treeview.addAction(self.zipAction) 
@@ -605,7 +605,28 @@ class myWindow(QMainWindow):
         self.createFolderAction = QAction(QIcon.fromTheme("folder-new"), "create new Folder",  triggered=self.createNewFolder)
         self.createFolderAction.setShortcut(QKeySequence("Shift+Ctrl+n"))
         self.createFolderAction.setShortcutVisibleInContextMenu(True)
-        self.treeview.addAction(self.createFolderAction) 
+        self.treeview.addAction(self.createFolderAction)
+
+        self.gitaddAction = QAction(QIcon("giticon.png"), "git add", triggered=self.gitadd)
+        self.listview.addAction(self.gitaddAction)
+
+        self.gitrestoreAction = QAction(QIcon("giticon.png"), "git restore", triggered=self.gitrestore)
+        self.listview.addAction(self.gitrestoreAction)
+
+        self.gitrestore_stagedAction = QAction(QIcon("giticon.png"), "git restore -- staged",
+                                               triggered=self.gitrestore_staged)
+        self.listview.addAction(self.gitrestore_stagedAction)
+
+        self.gitrm_cachedAction = QAction(QIcon("giticon.png"), "git rm --cached", triggered=self.gitrm_cached)
+        self.listview.addAction(self.gitrm_cachedAction)
+
+        self.gitrmAction = QAction(QIcon("giticon.png"), "git rm", triggered=self.gitrm)
+        self.listview.addAction(self.gitrmAction)
+
+        self.gitmvAction = QAction(QIcon("giticon.png"), "git mv", triggered=self.gitmv)
+        self.listview.addAction(self.gitmvAction)
+
+
 
     def playPlaylist(self):
         if self.listview.selectionModel().hasSelection():
@@ -759,6 +780,7 @@ class myWindow(QMainWindow):
         self.treeview.setCurrentIndex(self.fileModel.index(path))
         self.treeview.setFocus()
 
+        #print(index)
         #print(self.currentPath)
 
     def makeMP3(self):
@@ -947,10 +969,48 @@ class myWindow(QMainWindow):
         QMessageBox(QMessageBox.Information, title, message, QMessageBox.NoButton, self, Qt.Dialog|Qt.NoDropShadowWindowHint).show()  
 
     def contextMenuEvent(self, event):
+
+        selected = self.listview.selectionModel().selectedRows()
+
+        count = len(selected)
+
+        i = 0
+        if count == 1:
+            for index in selected:
+                #print("After")
+                #print(self.fileModel.fileInfo(index).fileName())
+                file_list = self.gitStatusList
+                filename = self.fileModel.fileInfo(index).fileName()
+                i = gitstatus(file_list, filename)
+
+            #for index in selected:
+            #path = self.currentPath + "/" + self.fileModel.data(index,self.fileModel.FileNameRole)
+            #print(path, "copied to clipboard")
+            #self.copyList.append(path)
+            #self.clip.setText('\n'.join(self.copyList))
+        #print("%s\n%s" % ("filepath(s) copied:", '\n'.join(self.copyList)))
+
         index = self.listview.selectionModel().currentIndex()
         path = self.fileModel.fileInfo(index).absoluteFilePath()
         self.menu = QMenu(self.listview)
         if self.listview.hasFocus():
+            #if "Untracked files" in git_handler.git_status(self.currentPath):
+            if i == gitStatus.Untracked:
+                self.menu.addAction(self.gitaddAction)
+            #elif "Changes not staged for commit" in git_handler.git_status(self.currentPath):
+            elif i == gitStatus.Modified:
+                self.menu.addAction(self.gitaddAction)
+                self.menu.addAction(self.gitrestoreAction)
+            #elif "changes to be commited" in git_handler.git_status(self.currentPath):
+            elif i == gitStatus.Staged:
+                self.menu.addAction(self.gitrestore_stagedAction)
+            #elif "Untracked files" not in git_handler.git_status(self.currentPath):
+            elif i == gitStatus.Unmodified:
+                self.menu.addAction(self.gitrm_cachedAction)
+                self.menu.addAction(self.gitrmAction)
+                self.menu.addAction(self.gitmvAction)
+            self.menu.addSeparator()
+
             self.menu.addAction(self.createFolderAction)
             self.menu.addAction(self.openAction)
             self.menu.addAction(self.openActionText)
@@ -1027,6 +1087,22 @@ class myWindow(QMainWindow):
             print("current path is:", path)
             self.menu = QMenu(self.treeview)
             if os.path.isdir(path):
+                #if "Untracked files" in git_handler.git_status(path):
+                if i == gitStatus.Untracked:
+                    self.menu.addAction(self.gitaddAction)
+                #elif "Changes not staged for commit" in git_handler.git_status(path):
+                elif i == gitStatus.Modified:
+                    self.menu.addAction(self.gitaddAction)
+                    self.menu.addAction(self.gitrestoreAction)
+                #elif "changes to be commited" in git_handler.git_status(path):
+                elif i == gitStatus.Staged:
+                    self.menu.addAction(self.gitrestore_stagedAction)
+                #elif "Untracked files" not in git_handler.git_status(path):
+                elif i == gitStatus.Unmodified:
+                    self.menu.addAction(self.gitrm_cachedAction)
+                    self.menu.addAction(self.gitrmAction)
+                    self.menu.addAction(self.gitmvAction)
+                self.menu.addSeparator()
                 self.menu.addAction(self.newWinAction)
                 self.menu.addAction(self.createFolderAction)
                 self.menu.addAction(self.renameFolderAction)
@@ -1045,6 +1121,45 @@ class myWindow(QMainWindow):
         foldername, ok = dlg.getText(self, 'Folder Name', "Folder Name:", QLineEdit.Normal, "", Qt.Dialog)
         if ok:
             success = QDir(path).mkdir(foldername)
+
+
+    def gitadd(self):
+
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_add(dir, path)
+
+    def gitrestore(self):
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_restore(dir, path)
+
+
+    def gitrestore_staged(self):
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_restore_staged(dir, path)
+
+    def gitrm_cached(self):
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_untrack(dir, path)
+
+    def gitrm(self):
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_rm(dir, path)
+
+    def gitmv(self):
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_mv(dir, path)
 
     def runPy2(self):
         if self.listview.selectionModel().hasSelection():
