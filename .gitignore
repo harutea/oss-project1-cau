@@ -1,2 +1,4 @@
 .DS_Store
 QFilemanager/__pycache__/
+venv/
+.idea/
