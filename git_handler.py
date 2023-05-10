@@ -32,7 +32,7 @@ def git_untrack(dir_path, file_name):
 
 def git_rm(dir_path, file_name):
     os.chdir(dir_path)
-    result = os.popen('git rm ' + file_name).read()
+    result = os.popen('git rm' + file_name).read()
     return result
 
 def git_mv(dir_path, file_name, new_name):
