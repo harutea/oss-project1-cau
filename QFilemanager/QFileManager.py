@@ -31,6 +31,7 @@ import shutil
 import subprocess
 import stat
 from send2trash import send2trash
+import git_handler
 
 
 #############################################################################################################################################################
@@ -542,6 +543,31 @@ class myWindow(QMainWindow):
         self.createFolderAction.setShortcutVisibleInContextMenu(True)
         self.treeview.addAction(self.createFolderAction) 
 
+        
+        self.gitaddAction = QAction(QIcon("giticon.png"), "git add", triggered = self.gitadd)
+        self.listview.addAction(self.gitaddAction)
+
+        self.gitrestoreAction = QAction(QIcon("giticon.png"), "git restore", triggered = self.gitrestore)
+        self.listview.addAction(self.gitrestoreAction)
+
+        self.gitrestore_stagedAction = QAction(QIcon("giticon.png"), "git restore -- staged", triggered = self.gitrestore_staged)
+        self.listview.addAction(self.gitrestore_stagedAction)
+
+        self.gitrm_cachedAction = QAction(QIcon("giticon.png"), "git restore", triggered = self.gitrm_cached)
+        self.listview.addAction(self.gitrm_cachedAction)
+
+        self.gitrmAction = QAction(QIcon("giticon.png"), "git restore", triggered = self.gitrm)
+        self.listview.addAction(self.gitrmAction)
+
+        self.gitmvAction = QAction(QIcon("giticon.png"), "git restore", triggered = self.gitmv)
+        self.listview.addAction(self.gitmvAction)
+
+
+
+        
+
+
+
     def playPlaylist(self):
         if self.listview.selectionModel().hasSelection():
             index = self.listview.selectionModel().currentIndex()
@@ -880,7 +906,20 @@ class myWindow(QMainWindow):
         index = self.listview.selectionModel().currentIndex()
         path = self.fileModel.fileInfo(index).absoluteFilePath()
         self.menu = QMenu(self.listview)
+
         if self.listview.hasFocus():
+            if "Untracked files" in git_handler.git_status(path):
+                self.menu.addAction(self.gitaddAction)
+            elif "Changes not staged for commit" in git_handler.git_status(path):
+                self.menu.addAction(self.gitaddAction)
+                self.menu.addAction(self.gitrestoreAction)
+            elif "changes to be commited" in git_handler.git_status(path):
+                self.menu.addAction(self.gitrestore_stagedAction)
+            elif "Untracked files" not in git_handler.git_status(path):
+                self.menu.addAction(self.gitrm_cachedAction)
+                self.menu.addAction(self.gitrmAction)
+                self.menu.addAction(self.gitmvAction)
+            self.menu.addSeparator()
             self.menu.addAction(self.createFolderAction)
             self.menu.addAction(self.openAction)
             self.menu.addAction(self.openActionText)
@@ -957,6 +996,18 @@ class myWindow(QMainWindow):
             print("current path is:", path)
             self.menu = QMenu(self.treeview)
             if os.path.isdir(path):
+                if "Untracked files" in git_handler.git_status(path):
+                    self.menu.addAction(self.gitaddAction)
+                elif "Changes not staged for commit" in git_handler.git_status(path):
+                    self.menu.addAction(self.gitaddAction)
+                    self.menu.addAction(self.gitrestoreAction)
+                elif "changes to be commited" in git_handler.git_status(path):
+                    self.menu.addAction(self.gitrestore_stagedAction)
+                elif "Untracked files" not in git_handler.git_status(path):
+                    self.menu.addAction(self.gitrm_cachedAction)
+                    self.menu.addAction(self.gitrmAction)
+                    self.menu.addAction(self.gitmvAction)
+                self.menu.addSeparator()
                 self.menu.addAction(self.newWinAction)
                 self.menu.addAction(self.createFolderAction)
                 self.menu.addAction(self.renameFolderAction)
@@ -967,6 +1018,8 @@ class myWindow(QMainWindow):
                 self.menu.addAction(self.findFilesAction)
                 self.menu.addAction(self.zipAction)
             self.menu.popup(QCursor.pos())
+        
+        
 
     def createNewFolder(self):
         index = self.treeview.selectionModel().currentIndex()
@@ -990,6 +1043,45 @@ class myWindow(QMainWindow):
             self.process.startDetached("python3", [path])
             if self.process.errorOccurred():
                 self.infobox(error)
+    
+
+    def gitadd(self):
+        if self.listview.selectionModel().hasSelection():
+            index = self.listview.selectionModel().currentIndex()
+            path = self.fileModel.fileInfo(index).absoluteFilePath()   
+            git_handler.git_add(path)
+
+
+    def gitrestore(self):
+        if self.listview.selectionModel().hasSelection():
+            index = self.listview.selectionModel().currentIndex()
+            path = self.fileModel.fileInfo(index).absoluteFilePath()   
+            git_handler.git_restore(path)
+
+
+    def gitrestore_staged(self):
+        if self.listview.selectionModel().hasSelection():
+            index = self.listview.selectionModel().currentIndex()
+            path = self.fileModel.fileInfo(index).absoluteFilePath()   
+            git_handler.git_restore_staged(path)
+
+    def gitrm_cached(self):
+        if self.listview.selectionModel().hasSelection():
+            index = self.listview.selectionModel().currentIndex()
+            path = self.fileModel.fileInfo(index).absoluteFilePath()   
+            git_handler.git_untrack(path)
+
+    def gitrm(self):
+        if self.listview.selectionModel().hasSelection():
+            index = self.listview.selectionModel().currentIndex()
+            path = self.fileModel.fileInfo(index).absoluteFilePath()   
+            git_handler.git_rm(path)
+
+    def gitmv(self):
+        if self.listview.selectionModel().hasSelection():
+            index = self.listview.selectionModel().currentIndex()
+            path = self.fileModel.fileInfo(index).absoluteFilePath()   
+            git_handler.git_mv(path)
 
     def renameFile(self):
         if self.listview.hasFocus():
@@ -1128,6 +1220,7 @@ class myWindow(QMainWindow):
         sysinfo = QSysInfo()
         myMachine = "current CPU Architecture: " + sysinfo.currentCpuArchitecture() + " *** " + sysinfo.prettyProductName() + " *** " + sysinfo.kernelType() + " " + sysinfo.kernelVersion()
         self.statusBar().showMessage(myMachine, 0)
+
 
 def mystylesheet(self):
     return """
