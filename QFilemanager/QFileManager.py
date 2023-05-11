@@ -382,6 +382,15 @@ class myWindow(QMainWindow):
         self.readSettings()
         self.enableHidden()
         self.getRowCount()
+        self.fileModel.directoryLoaded.connect(self.refreshStatus)
+
+    @pyqtSlot()
+    def refreshStatus(self):
+        if git_handler.git_status(self.currentPath):
+            self.gitStatusList = git_handler.get_status_list(self.currentPath)
+        else:
+            self.gitStatusList = False
+        self.initButtonPulse()
 
     def getRowCount(self):
         count = 0
