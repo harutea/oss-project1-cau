@@ -101,6 +101,7 @@ def get_status_list(dir_path):
         not_staged_index = result.index('Changes not staged for commit:')
 
     not_staged = {}
+    not_staged['renamed'] = []
     not_staged['new'] = []
     not_staged['modified'] = []
     not_staged['deleted'] = []
