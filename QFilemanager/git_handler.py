@@ -76,22 +76,22 @@ def get_status_list(dir_path):
         staged_index = result.index('Changes to be committed:')
     
     staged = {}
+    staged['renamed'] = []
     staged['new'] = []
     staged['modified'] = []
     staged['deleted'] = []
 
     if not staged_index == -1:
         i = 2
-        while 'new file' in result[staged_index + i]:
-            staged['new'].append(result[staged_index + i].split()[2])
-            i = i + 1
-
-        while 'modified' in result[staged_index + i]:
-            staged['modified'].append(result[staged_index + i].split()[1])
-            i = i + 1
-
-        while 'deleted' in result[staged_index + i]:
-            staged['deleted'].append(result[staged_index + i].split()[1])
+        while '\t' in result[staged_index + i]:
+            if 'renamed' in result[staged_index + i]:
+                staged['renamed'].append(result[staged_index + i].split()[3])
+            if 'new file' in result[staged_index + i]:
+                staged['new'].append(result[staged_index + i].split()[2])
+            if 'modified' in result[staged_index + i]:
+                staged['modified'].append(result[staged_index + i].split()[1])
+            if 'deleted' in result[staged_index + i]:
+                staged['deleted'].append(result[staged_index + i].split()[1])            
             i = i + 1
 
 
@@ -107,16 +107,15 @@ def get_status_list(dir_path):
 
     if not not_staged_index == -1:
         i = 3
-        while 'new file' in result[not_staged_index + i]:
-            not_staged['new'].append(result[not_staged_index + i].split()[2])
-            i = i + 1
-
-        while 'modified' in result[not_staged_index + i]:
-            not_staged['modified'].append(result[not_staged_index + i].split()[1])
-            i = i + 1
-
-        while 'deleted' in result[not_staged_index + i]:
-            not_staged['deleted'].append(result[not_staged_index + i].split()[1])
+        while '\t' in result[not_staged_index + i]:
+            if 'renamed' in result[not_staged_index + i]:
+                staged['renamed'].append(result[not_staged_index + i].split()[3])
+            if 'new file' in result[not_staged_index + i]:
+                not_staged['new'].append(result[not_staged_index + i].split()[2])
+            if 'modified' in result[not_staged_index + i]:
+                not_staged['modified'].append(result[not_staged_index + i].split()[1])
+            if 'deleted' in result[not_staged_index + i]:
+                not_staged['deleted'].append(result[not_staged_index + i].split()[1])
             i = i + 1
 
 
