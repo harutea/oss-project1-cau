@@ -287,7 +287,7 @@ class myWindow(QMainWindow):
 
 #############################################################################################################################################################
 #############################################################################################################################################################
-        self.tBar.addAction(self.gitinit)
+        self.tBar.addAction(self.gitinitOff)
         self.tBar.addAction(self.gitcommit)
         self.tBar.addSeparator()
 #############################################################################################################################################################
@@ -453,7 +453,9 @@ class myWindow(QMainWindow):
 
 #############################################################################################################################################################
 #############################################################################################################################################################
-        self.gitinit = QAction(QIcon("icons8-git-48.png"), "git init", triggered = self.init)
+        self.gitinit = QAction(QIcon("giticon.png"), "git init", triggered = self.init)
+        self.gitinitOff = QAction(QIcon("icons8-git-48.png"), "git initOff", triggered = self.initOff)
+        #self.treeview.addAction(self.initAction)
         self.gitcommit = QAction(QIcon("icons8-commit-git-64.png"), "git commit", triggered = self.commit)
 #############################################################################################################################################################
 #############################################################################################################################################################
@@ -776,11 +778,12 @@ class myWindow(QMainWindow):
         print("refreshing view")
         index = self.listview.selectionModel().currentIndex()
         path = self.fileModel.fileInfo(index).path()
-        self.gitStatusList = git_handler.get_status_list(self.currentPath)
         self.treeview.setCurrentIndex(self.fileModel.index(path))
         self.treeview.setFocus()
 
-        #print(index)
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
+        self.initButtonPulse()
+        #print(self.gitStatusList)
         #print(self.currentPath)
 
     def makeMP3(self):
@@ -957,10 +960,34 @@ class myWindow(QMainWindow):
 #############################################################################################################################################################
 #############################################################################################################################################################    
     def init(self):
+        index = self.listview.selectionModel().currentIndex()
+        dir = self.currentPath
+        path = self.fileModel.fileInfo(index).fileName()
+        git_handler.git_init(dir)
+
+    def initOff(self):
         pass
 
     def commit(self):
         pass
+
+    def initButtonPulse(self):
+        index = self.listview.selectionModel().currentIndex()
+        path = self.fileModel.fileInfo(index).path()
+        if gitTrue(self.gitStatusList):
+            self.tBar.removeAction(self.gitinit)
+            self.tBar.removeAction(self.gitinitOff)
+            self.tBar.insertAction(self.gitcommit, self.gitinit)
+        else:
+            self.tBar.removeAction(self.gitinit)
+            self.tBar.removeAction(self.gitinitOff)
+            self.tBar.insertAction(self.gitcommit, self.gitinitOff)
+
+            #self.tBar.addAction(self.gitcommit)
+            #self.tBar.addSeparator()
+
+
+
 #############################################################################################################################################################
 #############################################################################################################################################################
 
@@ -1122,9 +1149,7 @@ class myWindow(QMainWindow):
         if ok:
             success = QDir(path).mkdir(foldername)
 
-
     def gitadd(self):
-
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
@@ -1159,7 +1184,10 @@ class myWindow(QMainWindow):
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
-        git_handler.git_mv(dir, path)
+        dlg = QInputDialog(self)
+        newname, ok = dlg.getText(self, 'Git MV', "Git mv:", QLineEdit.Normal, "", Qt.Dialog)
+        if ok:
+            git_handler.git_mv(dir, path, newname)
 
     def runPy2(self):
         if self.listview.selectionModel().hasSelection():
