@@ -63,6 +63,8 @@ def gitstatus(file_list, file_name):
         result = gitStatus.Modified
     elif file_name in file_list['untracked']:
         result = gitStatus.Untracked
+    elif "./" in file_list['untracked']:
+        result = gitStatus.Untracked
     else:
         result = gitStatus.Unmodified
 
@@ -123,6 +125,11 @@ class statusQFileSystemModel(QFileSystemModel):
 
         return super().data(index, role)
 
+class MyMessageBox(QMessageBox):
+    def resizeEvent(Event):
+        super.resizeEvent(Event)
+        self.setFixedWidth(666)
+        self.setFixedHeight(666)
 
 #############################################################################################################################################################
 #############################################################################################################################################################
@@ -874,7 +881,7 @@ class myWindow(QMainWindow):
         path = self.dirModel.fileInfo(index).absoluteFilePath()
         self.listview.setRootIndex(self.fileModel.setRootPath(path))
         self.currentPath = path
-        # self.gitStatusList = git_handler.get_status_list(self.currentPath)
+        #self.gitStatusList = git_handler.get_status_list(self.currentPath)
         self.setWindowTitle(path)
         self.getRowCount()
 
@@ -996,7 +1003,51 @@ class myWindow(QMainWindow):
         pass
 
     def commit(self):
-        pass
+        print(self.gitStatusList)
+        if not git_handler.git_status(self.currentPath):
+            return
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("Git Commit")
+        str = "Renamed\n"
+        #print("Ahoy")
+        for file_name in self.gitStatusList['staged']['renamed']:
+            #print(file_name)
+            str += file_name + "\n"
+        str += "\nNew\n"
+        for file_name in self.gitStatusList['staged']['new']:
+            #print(file_name)
+            str += file_name + "\n"
+        str += "\nModified\n"
+        for file_name in self.gitStatusList['staged']['modified']:
+            print(file_name)
+            str += file_name + "\n"
+        str += "\nDeleted\n"
+        for file_name in self.gitStatusList['staged']['deleted']:
+            #print(file_name)
+            str += file_name + "\n"
+        str += "\nThese files have been staged.    "
+        msgBox.setText(str)
+        msgBox.setInformativeText("Do you want to commit your work?")
+        msgBox.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
+        #msgBox.resize()
+        ret = msgBox.exec()
+        while ret == QMessageBox.Yes:
+            dlg = QInputDialog(self)
+            newname, ok = dlg.getText(self, 'Git', "Commit Message:", QLineEdit.Normal, "", Qt.Dialog)
+            if ok:
+                if not newname == "":
+                    git_handler.git_commit(self.currentPath, newname)
+                else:
+                    errorBox = QMessageBox()
+                    errorBox.setWindowTitle("Error")
+                    errorBox.setText("You must insert commit message.")
+                    errorBox.setStandardButtons(QMessageBox.Ok)
+                    errorBox.setInformativeText("")
+                    errorBox.exec()
+            else:
+                ret = QMessageBox.No
+        return
+
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
@@ -1228,42 +1279,6 @@ class myWindow(QMainWindow):
             self.process.startDetached("python3", [path])
             if self.process.errorOccurred():
                 self.infobox(error)
-
-    def gitadd(self):
-        if self.listview.selectionModel().hasSelection():
-            index = self.listview.selectionModel().currentIndex()
-            path = self.fileModel.fileInfo(index).absoluteFilePath()
-            git_handler.git_add(path)
-
-    def gitrestore(self):
-        if self.listview.selectionModel().hasSelection():
-            index = self.listview.selectionModel().currentIndex()
-            path = self.fileModel.fileInfo(index).absoluteFilePath()
-            git_handler.git_restore(path)
-
-    def gitrestore_staged(self):
-        if self.listview.selectionModel().hasSelection():
-            index = self.listview.selectionModel().currentIndex()
-            path = self.fileModel.fileInfo(index).absoluteFilePath()
-            git_handler.git_restore_staged(path)
-
-    def gitrm_cached(self):
-        if self.listview.selectionModel().hasSelection():
-            index = self.listview.selectionModel().currentIndex()
-            path = self.fileModel.fileInfo(index).absoluteFilePath()
-            git_handler.git_untrack(path)
-
-    def gitrm(self):
-        if self.listview.selectionModel().hasSelection():
-            index = self.listview.selectionModel().currentIndex()
-            path = self.fileModel.fileInfo(index).absoluteFilePath()
-            git_handler.git_rm(path)
-
-    def gitmv(self):
-        if self.listview.selectionModel().hasSelection():
-            index = self.listview.selectionModel().currentIndex()
-            path = self.fileModel.fileInfo(index).absoluteFilePath()
-            git_handler.git_mv(path)
 
     def renameFile(self):
         if self.listview.hasFocus():
