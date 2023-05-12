@@ -1046,6 +1046,7 @@ class myWindow(QMainWindow):
             if ok:
                 if not newname == "":
                     git_handler.git_commit(self.currentPath, newname)
+                    return
                 else:
                     errorBox = QMessageBox()
                     errorBox.setWindowTitle("Error")

@@ -85,13 +85,13 @@ def get_status_list(dir_path):
         i = 2
         while '\t' in result[staged_index + i]:
             if 'renamed' in result[staged_index + i]:
-                staged['renamed'].append(result[staged_index + i].split()[3])
+                staged['renamed'].append(" ".join(result[staged_index + i].split()[3:]))
             if 'new file' in result[staged_index + i]:
-                staged['new'].append(result[staged_index + i].split()[2])
+                staged['new'].append(" ".join(result[staged_index + i].split()[2:]))
             if 'modified' in result[staged_index + i]:
-                staged['modified'].append(result[staged_index + i].split()[1])
+                staged['modified'].append(" ".join(result[staged_index + i].split()[1:]))
             if 'deleted' in result[staged_index + i]:
-                staged['deleted'].append(result[staged_index + i].split()[1])            
+                staged['deleted'].append(" ".join(result[staged_index + i].split()[1:]))            
             i = i + 1
 
 
@@ -110,13 +110,13 @@ def get_status_list(dir_path):
         i = 3
         while '\t' in result[not_staged_index + i]:
             if 'renamed' in result[not_staged_index + i]:
-                staged['renamed'].append(result[not_staged_index + i].split()[3])
+                staged['renamed'].append(" ".join(result[not_staged_index + i].split()[3:]))
             if 'new file' in result[not_staged_index + i]:
-                not_staged['new'].append(result[not_staged_index + i].split()[2])
+                not_staged['new'].append(" ".join(result[not_staged_index + i].split()[2:]))
             if 'modified' in result[not_staged_index + i]:
-                not_staged['modified'].append(result[not_staged_index + i].split()[1])
+                not_staged['modified'].append(" ".join(result[not_staged_index + i].split()[1:]))
             if 'deleted' in result[not_staged_index + i]:
-                not_staged['deleted'].append(result[not_staged_index + i].split()[1])
+                not_staged['deleted'].append(" ".join(result[not_staged_index + i].split()[1:]))
             i = i + 1
 
 
@@ -130,7 +130,7 @@ def get_status_list(dir_path):
     if not untracked_index == -1:
         i = 2
         while '\t' in result[untracked_index + i]:
-            untracked.append(result[untracked_index + i].split()[0])
+            untracked.append(" ".join(result[untracked_index + i].split()[0:]))
             i = i + 1
     
 
