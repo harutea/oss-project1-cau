@@ -57,7 +57,13 @@ def gitstatus(file_list, file_name):
 
     if file_name in file_list['staged']['new'] or file_name in file_list['staged']['modified'] or file_name in \
             file_list['staged']['deleted']:
-        result = gitStatus.Staged
+        if file_name in file_list['not_staged'] or file_name in file_list['not_staged']['modified'] or file_name in \
+            file_list['not_staged']['deleted']:
+            result = gitStatus.Staged_Modified
+        elif file_name in file_list['untracked']:
+            result = gitStatus.Staged_Untracked
+        else:
+            result = gitStatus.Staged
     elif file_name in file_list['not_staged'] or file_name in file_list['not_staged']['modified'] or file_name in \
             file_list['not_staged']['deleted']:
         result = gitStatus.Modified
@@ -111,6 +117,12 @@ class statusQFileSystemModel(QFileSystemModel):
             elif i == gitStatus.Staged:
                 icon.load(w.fileDirectories + "/icon/staged.png")
                 return icon
+            elif i == gitStatus.Staged_Modified:
+                icon.load(w.fileDirectories + "/icon/staged_modified.png")
+                return icon
+            elif i == gitStatus.Staged_Untracked:
+                icon.load(w.fileDirectories + "/icon/staged_untracked.png")
+                return icon
             elif i == gitStatus.Untracked:
                 icon.load(w.fileDirectories + "/icon/untracked.png")
                 return icon
@@ -140,6 +152,8 @@ class gitStatus(Enum):
     Staged = 2
     Untracked = 3
     Nogit = 4
+    Staged_Modified = 5
+    Staged_Untracked = 6
 
 
 #############################################################################################################################################################
@@ -1015,7 +1029,7 @@ class myWindow(QMainWindow):
         pass
 
     def commit(self):
-        print(self.gitStatusList)
+        #print(self.gitStatusList)
         if not git_handler.git_status(self.currentPath):
             return
         msgBox = QMessageBox()
