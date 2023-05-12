@@ -17,40 +17,40 @@ def git_init(dir_path):
 
 def git_add(dir_path, file_name):
     os.chdir(dir_path)
-    result = os.popen('git add ' + file_name).read()
+    result = os.popen('git add "' + file_name + '"').read()
     return True
 
 def git_restore(dir_path, file_name):
     os.chdir(dir_path)
-    result = os.popen('git restore ' + file_name).read()
+    result = os.popen('git restore "' + file_name + '"').read()
     if "fatal: " in result:
         return False
     return True
 
 def git_restore_staged(dir_path, file_name):
     os.chdir(dir_path)
-    result = os.popen('git restore --staged ' + file_name).read()
+    result = os.popen('git restore --staged "' + file_name + '"').read()
     if "fatal: " in result:
         return False
     return True
 
 def git_untrack(dir_path, file_name):
     os.chdir(dir_path)
-    result = os.popen('git rm --cached ' + file_name).read()
+    result = os.popen('git rm --cached "' + file_name + '"').read()
     if "fatal: " in result:
         return False
     return True
 
 def git_rm(dir_path, file_name):
     os.chdir(dir_path)
-    result = os.popen('git rm ' + file_name).read()
+    result = os.popen('git rm "' + file_name + '"').read()
     if "fatal: " in result:
         return False
     return True
 
 def git_mv(dir_path, file_name, new_name):
     os.chdir(dir_path)
-    result = os.popen('git mv ' + file_name + ' ' + new_name).read()
+    result = os.popen('git mv "' + file_name + '" "' + new_name + '"').read()
     if "fatal: " in result:
         return False
     return True
