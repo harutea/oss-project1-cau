@@ -373,6 +373,9 @@ class myWindow(QMainWindow):
         self.listview.setIndentation(10)
         self.listview.sortByColumn(0, Qt.AscendingOrder)
 
+        self.listview.setItemsExpandable(False)
+        self.listview.setRootIsDecorated(False)
+
         self.fileDirectories = os.getcwd()
         if git_handler.git_status(self.currentPath):
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
