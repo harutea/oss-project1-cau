@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 ############################################
-## Copyright (C) 2013 Riverbank Computing Limited.
-## Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
-## made by Axel Schneider * https://github.com/Axel-Erfurt/
-## August 2019
+# Copyright (C) 2013 Riverbank Computing Limited.
+# Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+# made by Axel Schneider * https://github.com/Axel-Erfurt/
+# August 2019
 ############################################
 import sys
 import os
@@ -58,7 +58,7 @@ def gitstatus(file_list, file_name):
     if file_name in file_list['staged']['new'] or file_name in file_list['staged']['modified'] or file_name in \
             file_list['staged']['deleted']:
         if file_name in file_list['not_staged'] or file_name in file_list['not_staged']['modified'] or file_name in \
-            file_list['not_staged']['deleted']:
+                file_list['not_staged']['deleted']:
             result = gitStatus.Staged_Modified
         elif file_name in file_list['untracked']:
             result = gitStatus.Staged_Untracked
@@ -101,7 +101,7 @@ class statusQFileSystemModel(QFileSystemModel):
             file_list = w.gitStatusList
             icon = QPixmap()
 
-            ##check if git status
+            # check if git status
 
             i = gitstatus(file_list, file_name)
 
@@ -137,6 +137,7 @@ class statusQFileSystemModel(QFileSystemModel):
 
         return super().data(index, role)
 
+
 class MyMessageBox(QMessageBox):
     def resizeEvent(Event):
         super.resizeEvent(Event)
@@ -145,6 +146,7 @@ class MyMessageBox(QMessageBox):
 
 #############################################################################################################################################################
 #############################################################################################################################################################
+
 
 class gitStatus(Enum):
     Unmodified = 0
@@ -206,7 +208,9 @@ class helpWindow(QMainWindow):
 
     def aboutApp(self):
         sysinfo = QSysInfo()
-        myMachine = "currentCPU Architecture: " + sysinfo.currentCpuArchitecture() + "<br>" + sysinfo.prettyProductName() + "<br>" + sysinfo.kernelType() + " " + sysinfo.kernelVersion()
+        myMachine = "currentCPU Architecture: " + sysinfo.currentCpuArchitecture() + "<br>" + \
+            sysinfo.prettyProductName() + "<br>" + sysinfo.kernelType() + \
+            " " + sysinfo.kernelVersion()
         title = "about QFileManager"
         message = """
                     <span style='color: #3465a4; font-size: 20pt;font-weight: bold;text-align: center;'
@@ -263,7 +267,8 @@ class myWindow(QMainWindow):
         self.createActions()
 
         self.findfield = QLineEdit()
-        self.findfield.addAction(QIcon.fromTheme("edit-find"), QLineEdit.LeadingPosition)
+        self.findfield.addAction(QIcon.fromTheme(
+            "edit-find"), QLineEdit.LeadingPosition)
         self.findfield.setClearButtonEnabled(True)
         self.findfield.setFixedWidth(150)
         self.findfield.setPlaceholderText("find")
@@ -320,7 +325,8 @@ class myWindow(QMainWindow):
 
         self.dirModel = QFileSystemModel()
         self.dirModel.setReadOnly(False)
-        self.dirModel.setFilter(QDir.NoDotAndDotDot | QDir.AllDirs | QDir.Drives)
+        self.dirModel.setFilter(QDir.NoDotAndDotDot |
+                                QDir.AllDirs | QDir.Drives)
         self.dirModel.setRootPath(QDir.rootPath())
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -329,7 +335,8 @@ class myWindow(QMainWindow):
         #############################################################################################################################################################
         #############################################################################################################################################################
         self.fileModel.setReadOnly(False)
-        self.fileModel.setFilter(QDir.NoDotAndDotDot | QDir.AllDirs | QDir.Files)
+        self.fileModel.setFilter(QDir.NoDotAndDotDot |
+                                 QDir.AllDirs | QDir.Files)
         self.fileModel.setResolveSymlinks(True)
 
         self.treeview.setModel(self.dirModel)
@@ -361,7 +368,8 @@ class myWindow(QMainWindow):
         self.treeview.selectionModel().selectionChanged.connect(self.on_selectionChanged)
         self.listview.doubleClicked.connect(self.list_doubleClicked)
 
-        docs = QStandardPaths.standardLocations(QStandardPaths.DocumentsLocation)[0]
+        docs = QStandardPaths.standardLocations(
+            QStandardPaths.DocumentsLocation)[0]
         self.treeview.setCurrentIndex(self.dirModel.index(docs))
         #        self.treeview.expand(self.treeview.currentIndex())
 
@@ -446,13 +454,16 @@ class myWindow(QMainWindow):
 
     def enableHidden(self):
         if self.hiddenEnabled == False:
-            self.fileModel.setFilter(QDir.NoDotAndDotDot | QDir.Hidden | QDir.AllDirs | QDir.Files)
-            self.dirModel.setFilter(QDir.NoDotAndDotDot | QDir.Hidden | QDir.AllDirs)
+            self.fileModel.setFilter(
+                QDir.NoDotAndDotDot | QDir.Hidden | QDir.AllDirs | QDir.Files)
+            self.dirModel.setFilter(
+                QDir.NoDotAndDotDot | QDir.Hidden | QDir.AllDirs)
             self.hiddenEnabled = True
             self.hiddenAction.setChecked(True)
             print("set hidden files to true")
         else:
-            self.fileModel.setFilter(QDir.NoDotAndDotDot | QDir.AllDirs | QDir.Files)
+            self.fileModel.setFilter(
+                QDir.NoDotAndDotDot | QDir.AllDirs | QDir.Files)
             self.dirModel.setFilter(QDir.NoDotAndDotDot | QDir.AllDirs)
             self.hiddenEnabled = False
             self.hiddenAction.setChecked(False)
@@ -467,23 +478,34 @@ class myWindow(QMainWindow):
             print("open '", path, "' in new window")
             self.process.startDetached("python3", [theApp, path])
 
-    ### actions
+    # actions
     def createActions(self):
-        self.btnBack = QAction(QIcon.fromTheme("go-previous"), "go back", triggered=self.goBack)
-        self.btnUp = QAction(QIcon.fromTheme("go-up"), "go up", triggered=self.goUp)
-        self.btnHome = QAction(QIcon.fromTheme("go-home"), "home folder", triggered=self.goHome)
-        self.btnMusic = QAction(QIcon.fromTheme("folder-music"), "music folder", triggered=self.goMusic)
-        self.btnDocuments = QAction(QIcon.fromTheme("folder-documents"), "documents folder", triggered=self.goDocuments)
-        self.btnDownloads = QAction(QIcon.fromTheme("folder-downloads"), "downloads folder", triggered=self.goDownloads)
-        self.btnVideo = QAction(QIcon.fromTheme("folder-video"), "video folder", triggered=self.goVideo)
-        self.openAction = QAction(QIcon.fromTheme("system-run"), "open File", triggered=self.openFile)
+        self.btnBack = QAction(QIcon.fromTheme(
+            "go-previous"), "go back", triggered=self.goBack)
+        self.btnUp = QAction(QIcon.fromTheme("go-up"),
+                             "go up", triggered=self.goUp)
+        self.btnHome = QAction(QIcon.fromTheme(
+            "go-home"), "home folder", triggered=self.goHome)
+        self.btnMusic = QAction(QIcon.fromTheme(
+            "folder-music"), "music folder", triggered=self.goMusic)
+        self.btnDocuments = QAction(QIcon.fromTheme(
+            "folder-documents"), "documents folder", triggered=self.goDocuments)
+        self.btnDownloads = QAction(QIcon.fromTheme(
+            "folder-downloads"), "downloads folder", triggered=self.goDownloads)
+        self.btnVideo = QAction(QIcon.fromTheme(
+            "folder-video"), "video folder", triggered=self.goVideo)
+        self.openAction = QAction(QIcon.fromTheme(
+            "system-run"), "open File", triggered=self.openFile)
 
         #############################################################################################################################################################
         #############################################################################################################################################################
-        self.gitinit = QAction(QIcon("icons8-git-48.png"), "git init", triggered=self.init)
-        self.gitinitOff = QAction(QIcon("giticon.png"), "git initOff", triggered=self.initOff)
+        self.gitinit = QAction(QIcon("icons8-git-48.png"),
+                               "git init", triggered=self.init)
+        self.gitinitOff = QAction(
+            QIcon("giticon.png"), "git initOff", triggered=self.initOff)
         # self.treeview.addAction(self.initAction)
-        self.gitcommit = QAction(QIcon("icons8-commit-git-64.png"), "git commit", triggered=self.commit)
+        self.gitcommit = QAction(
+            QIcon("icons8-commit-git-64.png"), "git commit", triggered=self.commit)
         #############################################################################################################################################################
         #############################################################################################################################################################
 
@@ -491,7 +513,8 @@ class myWindow(QMainWindow):
         self.openAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.openAction)
 
-        self.newWinAction = QAction(QIcon.fromTheme("folder-new"), "open in new window", triggered=self.openNewWin)
+        self.newWinAction = QAction(QIcon.fromTheme(
+            "folder-new"), "open in new window", triggered=self.openNewWin)
         self.newWinAction.setShortcut(QKeySequence("Ctrl+n"))
         self.newWinAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.newWinAction)
@@ -517,72 +540,89 @@ class myWindow(QMainWindow):
                                           triggered=self.renameFolder)
         self.treeview.addAction(self.renameFolderAction)
 
-        self.copyAction = QAction(QIcon.fromTheme("edit-copy"), "copy File(s)", triggered=self.copyFile)
+        self.copyAction = QAction(QIcon.fromTheme(
+            "edit-copy"), "copy File(s)", triggered=self.copyFile)
         self.copyAction.setShortcut(QKeySequence("Ctrl+c"))
         self.copyAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.copyAction)
 
-        self.copyFolderAction = QAction(QIcon.fromTheme("edit-copy"), "copy Folder", triggered=self.copyFolder)
+        self.copyFolderAction = QAction(QIcon.fromTheme(
+            "edit-copy"), "copy Folder", triggered=self.copyFolder)
         self.treeview.addAction(self.copyFolderAction)
 
-        self.pasteFolderAction = QAction(QIcon.fromTheme("edit-paste"), "paste Folder", triggered=self.pasteFolder)
+        self.pasteFolderAction = QAction(QIcon.fromTheme(
+            "edit-paste"), "paste Folder", triggered=self.pasteFolder)
         self.treeview.addAction(self.pasteFolderAction)
         #        self.listview.addAction(self.pasteFolderAction)
 
-        self.cutAction = QAction(QIcon.fromTheme("edit-cut"), "cut File(s)", triggered=self.cutFile)
+        self.cutAction = QAction(QIcon.fromTheme(
+            "edit-cut"), "cut File(s)", triggered=self.cutFile)
         self.cutAction.setShortcut(QKeySequence("Ctrl+x"))
         self.cutAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.cutAction)
 
-        self.pasteAction = QAction(QIcon.fromTheme("edit-paste"), "paste File(s) / Folder", triggered=self.pasteFile)
+        self.pasteAction = QAction(QIcon.fromTheme(
+            "edit-paste"), "paste File(s) / Folder", triggered=self.pasteFile)
         self.pasteAction.setShortcut(QKeySequence("Ctrl+v"))
         self.pasteAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.pasteAction)
 
-        self.delAction = QAction(QIcon.fromTheme("edit-delete"), "delete File(s)", triggered=self.deleteFile)
+        self.delAction = QAction(QIcon.fromTheme(
+            "edit-delete"), "delete File(s)", triggered=self.deleteFile)
         self.delAction.setShortcut(QKeySequence("Shift+Del"))
         self.delAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.delAction)
 
-        self.delFolderAction = QAction(QIcon.fromTheme("edit-delete"), "delete Folder", triggered=self.deleteFolder)
+        self.delFolderAction = QAction(QIcon.fromTheme(
+            "edit-delete"), "delete Folder", triggered=self.deleteFolder)
         self.treeview.addAction(self.delFolderAction)
 
-        self.delActionTrash = QAction(QIcon.fromTheme("user-trash"), "move to trash", triggered=self.deleteFileTrash)
+        self.delActionTrash = QAction(QIcon.fromTheme(
+            "user-trash"), "move to trash", triggered=self.deleteFileTrash)
         self.delActionTrash.setShortcut(QKeySequence("Del"))
         self.delActionTrash.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.delActionTrash)
 
-        self.imageAction = QAction(QIcon.fromTheme("image-x-generic"), "show Image", triggered=self.showImage)
+        self.imageAction = QAction(QIcon.fromTheme(
+            "image-x-generic"), "show Image", triggered=self.showImage)
         self.listview.addAction(self.imageAction)
 
-        self.urlAction = QAction(QIcon.fromTheme("browser"), "preview Page", triggered=self.showURL)
+        self.urlAction = QAction(QIcon.fromTheme(
+            "browser"), "preview Page", triggered=self.showURL)
         self.listview.addAction(self.urlAction)
 
-        self.dbAction = QAction(QIcon.fromTheme("image-x-generic"), "show Database", triggered=self.showDB)
+        self.dbAction = QAction(QIcon.fromTheme(
+            "image-x-generic"), "show Database", triggered=self.showDB)
         self.listview.addAction(self.dbAction)
 
-        self.py2Action = QAction(QIcon.fromTheme("python"), "run in python", triggered=self.runPy2)
+        self.py2Action = QAction(QIcon.fromTheme(
+            "python"), "run in python", triggered=self.runPy2)
         self.listview.addAction(self.py2Action)
 
-        self.py3Action = QAction(QIcon.fromTheme("python3"), "run in python3", triggered=self.runPy3)
+        self.py3Action = QAction(QIcon.fromTheme(
+            "python3"), "run in python3", triggered=self.runPy3)
         self.listview.addAction(self.py3Action)
 
-        self.findFilesAction = QAction(QIcon.fromTheme("edit-find"), "find in folder", triggered=self.findFiles)
+        self.findFilesAction = QAction(QIcon.fromTheme(
+            "edit-find"), "find in folder", triggered=self.findFiles)
         self.findFilesAction.setShortcut(QKeySequence("Ctrl+f"))
         self.findFilesAction.setShortcutVisibleInContextMenu(True)
         self.treeview.addAction(self.findFilesAction)
 
-        self.zipAction = QAction(QIcon.fromTheme("zip"), "create zip from folder", triggered=self.createZipFromFolder)
+        self.zipAction = QAction(QIcon.fromTheme(
+            "zip"), "create zip from folder", triggered=self.createZipFromFolder)
         self.treeview.addAction(self.zipAction)
 
         self.zipFilesAction = QAction(QIcon.fromTheme("zip"), "create zip from selected files",
                                       triggered=self.createZipFromFiles)
         self.listview.addAction(self.zipFilesAction)
 
-        self.unzipHereAction = QAction(QIcon.fromTheme("application-zip"), "extract here ...", triggered=self.unzipHere)
+        self.unzipHereAction = QAction(QIcon.fromTheme(
+            "application-zip"), "extract here ...", triggered=self.unzipHere)
         self.listview.addAction(self.unzipHereAction)
 
-        self.unzipToAction = QAction(QIcon.fromTheme("application-zip"), "extract to ...", triggered=self.unzipTo)
+        self.unzipToAction = QAction(QIcon.fromTheme(
+            "application-zip"), "extract to ...", triggered=self.unzipTo)
         self.listview.addAction(self.unzipToAction)
 
         self.playAction = QAction(QIcon.fromTheme("multimedia-player"), "play with Qt5Player",
@@ -591,10 +631,12 @@ class myWindow(QMainWindow):
         self.playAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.playAction)
 
-        self.playInternalAction = QAction(QIcon.fromTheme("vlc"), "play with vlc", triggered=self.playMedia)
+        self.playInternalAction = QAction(QIcon.fromTheme(
+            "vlc"), "play with vlc", triggered=self.playMedia)
         self.listview.addAction(self.playInternalAction)
 
-        self.mp3Action = QAction(QIcon.fromTheme("audio-x-generic"), "convert to mp3", triggered=self.makeMP3)
+        self.mp3Action = QAction(QIcon.fromTheme(
+            "audio-x-generic"), "convert to mp3", triggered=self.makeMP3)
         self.listview.addAction(self.mp3Action)
 
         self.playlistAction = QAction(QIcon.fromTheme("audio-x-generic"), "make playlist from all mp3 files",
@@ -610,18 +652,21 @@ class myWindow(QMainWindow):
         self.refreshAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.refreshAction)
 
-        self.hiddenAction = QAction("show hidden Files", triggered=self.enableHidden)
+        self.hiddenAction = QAction(
+            "show hidden Files", triggered=self.enableHidden)
         self.hiddenAction.setShortcut(QKeySequence("Ctrl+h"))
         self.hiddenAction.setShortcutVisibleInContextMenu(True)
         self.hiddenAction.setCheckable(True)
         self.listview.addAction(self.hiddenAction)
 
-        self.goBackAction = QAction(QIcon.fromTheme("go-back"), "go back", triggered=self.goBack)
+        self.goBackAction = QAction(QIcon.fromTheme(
+            "go-back"), "go back", triggered=self.goBack)
         self.goBackAction.setShortcut(QKeySequence(Qt.Key_Backspace))
         self.goBackAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.goBackAction)
 
-        self.helpAction = QAction(QIcon.fromTheme("help"), "Help", triggered=self.showHelp)
+        self.helpAction = QAction(QIcon.fromTheme(
+            "help"), "Help", triggered=self.showHelp)
         self.helpAction.setShortcut(QKeySequence(Qt.Key_F1))
         self.helpAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.helpAction)
@@ -649,42 +694,52 @@ class myWindow(QMainWindow):
         self.createFolderAction.setShortcutVisibleInContextMenu(True)
         self.treeview.addAction(self.createFolderAction)
 
-        self.gitaddAction = QAction(QIcon("giticon.png"), "git add", triggered=self.gitadd)
+        self.gitaddAction = QAction(
+            QIcon("giticon.png"), "git add", triggered=self.gitadd)
         self.listview.addAction(self.gitaddAction)
 
-        self.gitrestoreAction = QAction(QIcon("giticon.png"), "git restore", triggered=self.gitrestore)
+        self.gitrestoreAction = QAction(
+            QIcon("giticon.png"), "git restore", triggered=self.gitrestore)
         self.listview.addAction(self.gitrestoreAction)
 
         self.gitrestore_stagedAction = QAction(QIcon("giticon.png"), "git restore -- staged",
                                                triggered=self.gitrestore_staged)
         self.listview.addAction(self.gitrestore_stagedAction)
 
-        self.gitrm_cachedAction = QAction(QIcon("giticon.png"), "git rm --cached", triggered=self.gitrm_cached)
+        self.gitrm_cachedAction = QAction(
+            QIcon("giticon.png"), "git rm --cached", triggered=self.gitrm_cached)
         self.listview.addAction(self.gitrm_cachedAction)
 
-        self.gitrmAction = QAction(QIcon("giticon.png"), "git rm", triggered=self.gitrm)
+        self.gitrmAction = QAction(
+            QIcon("giticon.png"), "git rm", triggered=self.gitrm)
         self.listview.addAction(self.gitrmAction)
 
-        self.gitmvAction = QAction(QIcon("giticon.png"), "git mv", triggered=self.gitmv)
+        self.gitmvAction = QAction(
+            QIcon("giticon.png"), "git mv", triggered=self.gitmv)
         self.listview.addAction(self.gitmvAction)
 
-        self.gitaddAction = QAction(QIcon("giticon.png"), "git add", triggered=self.gitadd)
+        self.gitaddAction = QAction(
+            QIcon("giticon.png"), "git add", triggered=self.gitadd)
         self.listview.addAction(self.gitaddAction)
 
-        self.gitrestoreAction = QAction(QIcon("giticon.png"), "git restore", triggered=self.gitrestore)
+        self.gitrestoreAction = QAction(
+            QIcon("giticon.png"), "git restore", triggered=self.gitrestore)
         self.listview.addAction(self.gitrestoreAction)
 
         self.gitrestore_stagedAction = QAction(QIcon("giticon.png"), "git restore -- staged",
                                                triggered=self.gitrestore_staged)
         self.listview.addAction(self.gitrestore_stagedAction)
 
-        self.gitrm_cachedAction = QAction(QIcon("giticon.png"), "git rm --cached", triggered=self.gitrm_cached)
+        self.gitrm_cachedAction = QAction(
+            QIcon("giticon.png"), "git rm --cached", triggered=self.gitrm_cached)
         self.listview.addAction(self.gitrm_cachedAction)
 
-        self.gitrmAction = QAction(QIcon("giticon.png"), "git rm", triggered=self.gitrm)
+        self.gitrmAction = QAction(
+            QIcon("giticon.png"), "git rm", triggered=self.gitrm)
         self.listview.addAction(self.gitrmAction)
 
-        self.gitmvAction = QAction(QIcon("giticon.png"), "git mv", triggered=self.gitmv)
+        self.gitmvAction = QAction(
+            QIcon("giticon.png"), "git mv", triggered=self.gitmv)
         self.listview.addAction(self.gitmvAction)
 
     def playPlaylist(self):
@@ -766,7 +821,8 @@ class myWindow(QMainWindow):
                     self.terminal.shellWin.startDir = folderpath
                     self.terminal.shellWin.name = (str(getpass.getuser()) + "@" + str(socket.gethostname())
                                                    + ":" + str(folderpath) + "$ ")
-                    self.terminal.shellWin.appendPlainText(self.terminal.shellWin.name)
+                    self.terminal.shellWin.appendPlainText(
+                        self.terminal.shellWin.name)
                     self.terminal.shellWin.insertPlainText("./%s" % (filename))
             else:
                 self.terminal = QTerminalFolder.MainWindow()
@@ -776,7 +832,8 @@ class myWindow(QMainWindow):
                     self.terminal.shellWin.startDir = path
                     self.terminal.shellWin.name = (str(getpass.getuser()) + "@" + str(socket.gethostname())
                                                    + ":" + str(path) + "$ ")
-                    self.terminal.shellWin.appendPlainText(self.terminal.shellWin.name)
+                    self.terminal.shellWin.appendPlainText(
+                        self.terminal.shellWin.name)
 
     def createZipFromFolder(self):
         index = self.treeview.selectionModel().currentIndex()
@@ -796,7 +853,8 @@ class myWindow(QMainWindow):
             fname = self.dirModel.fileInfo(index).fileName()
             print("folder to zip:", path)
             self.copyFile()
-            target, _ = QFileDialog.getSaveFileName(self, "Save as...", path + "/" + "archive.zip", "zip files (*.zip)")
+            target, _ = QFileDialog.getSaveFileName(
+                self, "Save as...", path + "/" + "archive.zip", "zip files (*.zip)")
             if (target != ""):
                 zipText = ""
                 with ZipFile(target, 'w') as myzip:
@@ -817,7 +875,8 @@ class myWindow(QMainWindow):
     def unzipTo(self):
         file_index = self.listview.selectionModel().currentIndex()
         file_path = self.fileModel.fileInfo(file_index).filePath()
-        dirpath = QFileDialog.getExistingDirectory(self, "selectFolder", QDir.homePath(), QFileDialog.ShowDirsOnly)
+        dirpath = QFileDialog.getExistingDirectory(
+            self, "selectFolder", QDir.homePath(), QFileDialog.ShowDirsOnly)
         if dirpath:
             with ZipFile(file_path, 'r') as zipObj:
                 zipObj.extractall(dirpath)
@@ -898,7 +957,8 @@ class myWindow(QMainWindow):
                 self.treeview.setExpanded(index, False)
 
     def getFolderSize(self, path):
-        size = sum(os.path.getsize(f) for f in os.listdir(folder) if os.path.isfile(f))
+        size = sum(os.path.getsize(f)
+                   for f in os.listdir(folder) if os.path.isfile(f))
         return size
 
     def on_selectionChanged(self):
@@ -907,7 +967,7 @@ class myWindow(QMainWindow):
         path = self.dirModel.fileInfo(index).absoluteFilePath()
         self.listview.setRootIndex(self.fileModel.setRootPath(path))
         self.currentPath = path
-        #self.gitStatusList = git_handler.get_status_list(self.currentPath)
+        # self.gitStatusList = git_handler.get_status_list(self.currentPath)
         self.setWindowTitle(path)
         self.getRowCount()
 
@@ -921,7 +981,8 @@ class myWindow(QMainWindow):
                 if self.checkIsApplication(path) == True:
                     self.process.startDetached(files)
                 else:
-                    QDesktopServices.openUrl(QUrl(files, QUrl.TolerantMode | QUrl.EncodeUnicode))
+                    QDesktopServices.openUrl(
+                        QUrl(files, QUrl.TolerantMode | QUrl.EncodeUnicode))
 
     def openFileText(self):
         if self.listview.selectionModel().hasSelection():
@@ -973,7 +1034,8 @@ class myWindow(QMainWindow):
             if self.checkIsApplication(path) == True:
                 self.process.startDetached(path)
             else:
-                QDesktopServices.openUrl(QUrl(path, QUrl.TolerantMode | QUrl.EncodeUnicode))
+                QDesktopServices.openUrl(
+                    QUrl(path, QUrl.TolerantMode | QUrl.EncodeUnicode))
         else:
             self.treeview.setCurrentIndex(self.dirModel.index(path))
             self.treeview.setFocus()
@@ -998,22 +1060,26 @@ class myWindow(QMainWindow):
         self.treeview.setFocus()
 
     def goMusic(self):
-        docs = QStandardPaths.standardLocations(QStandardPaths.MusicLocation)[0]
+        docs = QStandardPaths.standardLocations(
+            QStandardPaths.MusicLocation)[0]
         self.treeview.setCurrentIndex(self.dirModel.index(docs))
         self.treeview.setFocus()
 
     def goVideo(self):
-        docs = QStandardPaths.standardLocations(QStandardPaths.MoviesLocation)[0]
+        docs = QStandardPaths.standardLocations(
+            QStandardPaths.MoviesLocation)[0]
         self.treeview.setCurrentIndex(self.dirModel.index(docs))
         self.treeview.setFocus()
 
     def goDocuments(self):
-        docs = QStandardPaths.standardLocations(QStandardPaths.DocumentsLocation)[0]
+        docs = QStandardPaths.standardLocations(
+            QStandardPaths.DocumentsLocation)[0]
         self.treeview.setCurrentIndex(self.dirModel.index(docs))
         self.treeview.setFocus()
 
     def goDownloads(self):
-        docs = QStandardPaths.standardLocations(QStandardPaths.DownloadLocation)[0]
+        docs = QStandardPaths.standardLocations(
+            QStandardPaths.DownloadLocation)[0]
         self.treeview.setCurrentIndex(self.dirModel.index(docs))
         self.treeview.setFocus()
 
@@ -1029,19 +1095,19 @@ class myWindow(QMainWindow):
         pass
 
     def commit(self):
-        #print(self.gitStatusList)
+        # print(self.gitStatusList)
         if not git_handler.git_status(self.currentPath):
             return
         msgBox = QMessageBox()
         msgBox.setWindowTitle("Git Commit")
         str = "Renamed\n"
-        #print("Ahoy")
+        # print("Ahoy")
         for file_name in self.gitStatusList['staged']['renamed']:
-            #print(file_name)
+            # print(file_name)
             str += file_name + "\n"
         str += "\nNew\n"
         for file_name in self.gitStatusList['staged']['new']:
-            #print(file_name)
+            # print(file_name)
             str += file_name + "\n"
         str += "\nModified\n"
         for file_name in self.gitStatusList['staged']['modified']:
@@ -1049,17 +1115,18 @@ class myWindow(QMainWindow):
             str += file_name + "\n"
         str += "\nDeleted\n"
         for file_name in self.gitStatusList['staged']['deleted']:
-            #print(file_name)
+            # print(file_name)
             str += file_name + "\n"
         str += "\nThese files have been staged.    "
         msgBox.setText(str)
         msgBox.setInformativeText("Do you want to commit your work?")
         msgBox.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
-        #msgBox.resize()
+        # msgBox.resize()
         ret = msgBox.exec()
         while ret == QMessageBox.Yes:
             dlg = QInputDialog(self)
-            newname, ok = dlg.getText(self, 'Git', "Commit Message:", QLineEdit.Normal, "", Qt.Dialog)
+            newname, ok = dlg.getText(
+                self, 'Git', "Commit Message:", QLineEdit.Normal, "", Qt.Dialog)
             if ok:
                 if not newname == "":
                     git_handler.git_commit(self.currentPath, newname)
@@ -1074,7 +1141,6 @@ class myWindow(QMainWindow):
             else:
                 ret = QMessageBox.No
         return
-
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
@@ -1141,6 +1207,10 @@ class myWindow(QMainWindow):
                 self.menu.addAction(self.gitrm_cachedAction)
                 self.menu.addAction(self.gitrmAction)
                 self.menu.addAction(self.gitmvAction)
+            elif i == gitStatus.Staged_Modified:
+                self.menu.addAction(self.gitaddAction)
+                self.menu.addAction(self.gitrestoreAction)
+
             self.menu.addSeparator()
             self.menu.addAction(self.createFolderAction)
             self.menu.addAction(self.openAction)
@@ -1159,21 +1229,22 @@ class myWindow(QMainWindow):
             self.menu.addAction(self.terminalAction)
             self.menu.addAction(self.startInTerminalAction)
             self.menu.addAction(self.executableAction)
-            ### database viewer
-            db_extension = [".sql", "db", "sqlite", "sqlite3", ".SQL", "DB", "SQLITE", "SQLITE3"]
+            # database viewer
+            db_extension = [".sql", "db", "sqlite",
+                            "sqlite3", ".SQL", "DB", "SQLITE", "SQLITE3"]
             for ext in db_extension:
                 if ext in path:
                     self.menu.addAction(self.dbAction)
-            ### html viewer
+            # html viewer
             url_extension = [".htm", ".html"]
             for ext in url_extension:
                 if ext in path:
                     self.menu.addAction(self.urlAction)
-            ### run in python
+            # run in python
             if path.endswith(".py"):
                 self.menu.addAction(self.py2Action)
                 self.menu.addAction(self.py3Action)
-            ### image viewer
+            # image viewer
             image_extension = [".png", "jpg", ".jpeg", ".bmp", "tif", ".tiff", ".pnm", ".svg",
                                ".exif", ".gif"]
             for ext in image_extension:
@@ -1233,6 +1304,10 @@ class myWindow(QMainWindow):
                     self.menu.addAction(self.gitrm_cachedAction)
                     self.menu.addAction(self.gitrmAction)
                     self.menu.addAction(self.gitmvAction)
+                elif i == gitStatus.Staged_Modified:
+                    self.menu.addAction(self.gitaddAction)
+                    self.menu.addAction(self.gitrestoreAction)
+
                 self.menu.addSeparator()
                 self.menu.addAction(self.newWinAction)
                 self.menu.addAction(self.createFolderAction)
@@ -1249,7 +1324,8 @@ class myWindow(QMainWindow):
         index = self.treeview.selectionModel().currentIndex()
         path = self.dirModel.fileInfo(index).absoluteFilePath()
         dlg = QInputDialog(self)
-        foldername, ok = dlg.getText(self, 'Folder Name', "Folder Name:", QLineEdit.Normal, "", Qt.Dialog)
+        foldername, ok = dlg.getText(
+            self, 'Folder Name', "Folder Name:", QLineEdit.Normal, "", Qt.Dialog)
         if ok:
             success = QDir(path).mkdir(foldername)
 
@@ -1288,7 +1364,8 @@ class myWindow(QMainWindow):
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
         dlg = QInputDialog(self)
-        newname, ok = dlg.getText(self, 'Git MV', "Git mv:", QLineEdit.Normal, "", Qt.Dialog)
+        newname, ok = dlg.getText(
+            self, 'Git MV', "Git mv:", QLineEdit.Normal, "", Qt.Dialog)
         if ok:
             git_handler.git_mv(dir, path, newname)
 
@@ -1316,7 +1393,8 @@ class myWindow(QMainWindow):
                 print(basepath)
                 oldName = self.fileModel.fileInfo(index).fileName()
                 dlg = QInputDialog()
-                newName, ok = dlg.getText(self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
+                newName, ok = dlg.getText(
+                    self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
                 if ok:
                     newpath = basepath + "/" + newName
                     QFile.rename(path, newpath)
@@ -1330,7 +1408,8 @@ class myWindow(QMainWindow):
         print("pasepath:", basepath)
         oldName = self.dirModel.fileInfo(index).fileName()
         dlg = QInputDialog()
-        newName, ok = dlg.getText(self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
+        newName, ok = dlg.getText(
+            self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
         if ok:
             newpath = basepath + "/" + newName
             print(newpath)
@@ -1342,7 +1421,8 @@ class myWindow(QMainWindow):
         selected = self.listview.selectionModel().selectedRows()
         count = len(selected)
         for index in selected:
-            path = self.currentPath + "/" + self.fileModel.data(index, self.fileModel.FileNameRole)
+            path = self.currentPath + "/" + \
+                self.fileModel.data(index, self.fileModel.FileNameRole)
             print(path, "copied to clipboard")
             self.copyList.append(path)
             self.clip.setText('\n'.join(self.copyList))
@@ -1358,7 +1438,8 @@ class myWindow(QMainWindow):
     def pasteFolder(self):
         index = self.treeview.selectionModel().currentIndex()
         target = self.folder_copied
-        destination = self.dirModel.fileInfo(index).absoluteFilePath() + "/" + QFileInfo(self.folder_copied).fileName()
+        destination = self.dirModel.fileInfo(index).absoluteFilePath(
+        ) + "/" + QFileInfo(self.folder_copied).fileName()
         print("%s %s %s" % (target, "will be pasted to", destination))
         try:
             shutil.copytree(target, destination)
@@ -1375,7 +1456,8 @@ class myWindow(QMainWindow):
             file_index = self.listview.selectionModel().currentIndex()
             for target in self.copyList:
                 print(target)
-                destination = self.dirModel.fileInfo(index).absoluteFilePath() + "/" + QFileInfo(target).fileName()
+                destination = self.dirModel.fileInfo(
+                    index).absoluteFilePath() + "/" + QFileInfo(target).fileName()
                 print("%s %s" % ("pasted File to", destination))
                 QFile.copy(target, destination)
                 if self.cut == True:
@@ -1431,7 +1513,8 @@ class myWindow(QMainWindow):
         index = self.listview.selectionModel().currentIndex()
         self.copyFile()
         msg = QMessageBox.question(self, "Info",
-                                   "Caution!\nReally move this Files to Trash\n" + '\n'.join(self.copyList),
+                                   "Caution!\nReally move this Files to Trash\n" +
+                                   '\n'.join(self.copyList),
                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         if msg == QMessageBox.Yes:
             print('Deletion confirmed.')
@@ -1447,7 +1530,9 @@ class myWindow(QMainWindow):
 
     def createStatusBar(self):
         sysinfo = QSysInfo()
-        myMachine = "current CPU Architecture: " + sysinfo.currentCpuArchitecture() + " *** " + sysinfo.prettyProductName() + " *** " + sysinfo.kernelType() + " " + sysinfo.kernelVersion()
+        myMachine = "current CPU Architecture: " + sysinfo.currentCpuArchitecture() + " *** " + \
+            sysinfo.prettyProductName() + " *** " + sysinfo.kernelType() + \
+            " " + sysinfo.kernelVersion()
         self.statusBar().showMessage(myMachine, 0)
 
 
@@ -1569,4 +1654,3 @@ if __name__ == '__main__':
         w.treeview.setRootIndex(w.dirModel.setRootPath(path))
         w.setWindowTitle(path)
     sys.exit(app.exec_())
-
