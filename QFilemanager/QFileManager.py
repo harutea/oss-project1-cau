@@ -1210,6 +1210,8 @@ class myWindow(QMainWindow):
             elif i == gitStatus.Staged_Modified:
                 self.menu.addAction(self.gitaddAction)
                 self.menu.addAction(self.gitrestoreAction)
+            elif i == gitStatus.Staged_Untracked:
+                self.menu.addAction(self.gitaddAction)
 
             self.menu.addSeparator()
             self.menu.addAction(self.createFolderAction)
@@ -1307,7 +1309,8 @@ class myWindow(QMainWindow):
                 elif i == gitStatus.Staged_Modified:
                     self.menu.addAction(self.gitaddAction)
                     self.menu.addAction(self.gitrestoreAction)
-
+                elif i == gitStatus.Staged_Untracked:
+                    self.menu.addAction(self.gitaddAction)
                 self.menu.addSeparator()
                 self.menu.addAction(self.newWinAction)
                 self.menu.addAction(self.createFolderAction)
