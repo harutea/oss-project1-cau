@@ -1,7 +1,7 @@
-# title 
-oss-project1-cau
+# oss-project1-cau 
+2023-1 Open Source SW Project 1
 
-# original source code
+# Original source code
 https://github.com/Axel-Erfurt/QFilemanager
 
 # How to install
