@@ -55,16 +55,16 @@ def gitstatus(file_list, file_name):
     if QFileInfo(file_name).isDir():
         return "Directory"
 
-    if file_name in file_list['staged']['new'] or file_name in file_list['staged']['modified'] or file_name in \
+    if file_name in file_list['staged']['renamed'] or file_name in file_list['staged']['new'] or file_name in file_list['staged']['modified'] or file_name in \
             file_list['staged']['deleted']:
-        if file_name in file_list['not_staged'] or file_name in file_list['not_staged']['modified'] or file_name in \
+        if file_name in file_list['not_staged']['renamed'] or file_name in file_list['not_staged']['new'] or file_name in file_list['not_staged']['modified'] or file_name in \
                 file_list['not_staged']['deleted']:
             result = gitStatus.Staged_Modified
         elif file_name in file_list['untracked']:
             result = gitStatus.Staged_Untracked
         else:
             result = gitStatus.Staged
-    elif file_name in file_list['not_staged'] or file_name in file_list['not_staged']['modified'] or file_name in \
+    elif file_name in file_list['not_staged']['renamed'] or file_name in file_list['not_staged']['new'] or  file_name in file_list['not_staged']['modified'] or file_name in \
             file_list['not_staged']['deleted']:
         result = gitStatus.Modified
     elif file_name in file_list['untracked']:
