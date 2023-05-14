@@ -1,10 +1,10 @@
 # oss-project1-cau 
 2023-1 Open Source SW Project 1
 
-# Original source code
+## Original source code
 [QFilemanager](https://github.com/Axel-Erfurt/QFilemanager) by Axel-Erfurt
 
-# How to install
+## How to install
 **[OS]** Ubuntu 22.04.2
 **[Requirements]** Python3, PyQt5, PyQtWebEngine, send2trash
 
@@ -27,7 +27,7 @@ cd QFilemanager
 python3 QFileManager.py
 ```
 
-# 기능
+## 기능
 **1. [toolbar] git init & git commit button**
 - git init 버튼: git이 관리하고 있지 않은 폴더에서 누르면 git이 관리하기 시작한다.
 ![git init button](./QFilemanager/icons8-git-48.png)
@@ -65,7 +65,7 @@ python3 QFileManager.py
 **4. 새로고침**
 F5를 누르면 git status가 새로고침이 된다.
 
-# 커밋 컨벤션
+## 커밋 컨벤션
 메시지 형식: [커밋 종류] [메시지] [#이슈]
 
 ### 커밋 종류:
