@@ -25,6 +25,14 @@ cd QFilemanager
 python3 QFileManager.py
 ```
 
+### 설치 중 에러 발생 시
+다음 명령어 수행 후 Requirements 재설치
+```
+sudo apt update
+pip3 install --upgrade pip
+pip3 install wheel setuptools pip --upgrade
+```
+
 ## 기능
 **1. [toolbar] git init & git commit button**
 - git init 버튼: git이 관리하고 있지 않은 폴더에서 누르면 git이 관리하기 시작한다.
