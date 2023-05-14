@@ -5,9 +5,9 @@
 * [QFilemanager](https://github.com/Axel-Erfurt/QFilemanager) by Axel-Erfurt
 
 ## How to install
-**[OS]** Ubuntu 22.04.2
-**[Requirements]** Python3, PyQt5, PyQtWebEngine, send2trash
-
+* **[OS]** Ubuntu 22.04.2
+* **[Requirements]** Python3, PyQt5, PyQtWebEngine, send2trash
+* **Ubuntu 언어: English**
 ```
 sudo apt install python3  
 sudo apt install python3-pip  
@@ -15,11 +15,7 @@ pip3 install PyQt5
 pip3 install PyQtWebEngine  
 pip3 install send2trash  
 sudo apt-get install --reinstall libxcb-xinerama0 
-```
 
-**Ubuntu 언어 English**
-
-```
 sudo apt install git  
 git clone https://github.com/teacrepe/oss-project1-cau.git 
 cd oss-project1-cau  
