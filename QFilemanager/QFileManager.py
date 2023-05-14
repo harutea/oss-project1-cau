@@ -283,21 +283,21 @@ class myWindow(QMainWindow):
         self.tBar.setMovable(False)
         self.tBar.setIconSize(QSize(32, 32))
         self.tBar.addAction(self.createFolderAction)
-        self.tBar.addAction(self.copyFolderAction)
-        self.tBar.addAction(self.pasteFolderAction)
-        self.tBar.addSeparator()
-        self.tBar.addAction(self.copyAction)
-        self.tBar.addAction(self.cutAction)
-        self.tBar.addAction(self.pasteAction)
-        self.tBar.addSeparator()
-        self.tBar.addAction(self.findFilesAction)
-        self.tBar.addSeparator()
-        self.tBar.addAction(self.delActionTrash)
-        self.tBar.addAction(self.delAction)
-        self.tBar.addSeparator()
-        self.tBar.addAction(self.terminalAction)
-        self.tBar.addSeparator()
-        self.tBar.addAction(self.helpAction)
+        #self.tBar.addAction(self.copyFolderAction)
+        #self.tBar.addAction(self.pasteFolderAction)
+        #self.tBar.addSeparator()
+        #self.tBar.addAction(self.copyAction)
+        #self.tBar.addAction(self.cutAction)
+        #self.tBar.addAction(self.pasteAction)
+        #self.tBar.addSeparator()
+        #self.tBar.addAction(self.findFilesAction)
+        #self.tBar.addSeparator()
+        #self.tBar.addAction(self.delActionTrash)
+        #self.tBar.addAction(self.delAction)
+        #self.tBar.addSeparator()
+        #self.tBar.addAction(self.terminalAction)
+        #self.tBar.addSeparator()
+        #self.tBar.addAction(self.helpAction)
 
         # empty = QWidget()
         # empty.setMinimumWidth(60)
@@ -321,7 +321,7 @@ class myWindow(QMainWindow):
         self.tBar.addAction(self.btnBack)
         self.tBar.addAction(self.btnUp)
 
-        self.tBar.addWidget(self.findfield)
+        #self.tBar.addWidget(self.findfield)
 
         self.dirModel = QFileSystemModel()
         self.dirModel.setReadOnly(False)
@@ -1130,6 +1130,7 @@ class myWindow(QMainWindow):
             if ok:
                 if not newname == "":
                     git_handler.git_commit(self.currentPath, newname)
+                    self.gitStatusList = git_handler.get_status_list(self.currentPath)
                     return
                 else:
                     errorBox = QMessageBox()
@@ -1215,75 +1216,75 @@ class myWindow(QMainWindow):
 
             self.menu.addSeparator()
             self.menu.addAction(self.createFolderAction)
-            self.menu.addAction(self.openAction)
-            self.menu.addAction(self.openActionText)
-            self.menu.addAction(self.openActionTextRoot)
-            self.menu.addSeparator()
-            if os.path.isdir(path):
-                self.menu.addAction(self.newWinAction)
+            #self.menu.addAction(self.openAction)
+            #self.menu.addAction(self.openActionText)
+            #self.menu.addAction(self.openActionTextRoot)
+            #self.menu.addSeparator()
+            #if os.path.isdir(path):
+                #self.menu.addAction(self.newWinAction)
             self.menu.addSeparator()
             self.menu.addAction(self.renameAction)
             self.menu.addSeparator()
-            self.menu.addAction(self.copyAction)
-            self.menu.addAction(self.cutAction)
-            self.menu.addAction(self.pasteAction)
+            #self.menu.addAction(self.copyAction)
+            #self.menu.addAction(self.cutAction)
+            #self.menu.addAction(self.pasteAction)
             #            self.menu.addAction(self.pasteFolderAction)
-            self.menu.addAction(self.terminalAction)
-            self.menu.addAction(self.startInTerminalAction)
-            self.menu.addAction(self.executableAction)
+            #self.menu.addAction(self.terminalAction)
+            #self.menu.addAction(self.startInTerminalAction)
+            #self.menu.addAction(self.executableAction)
             # database viewer
-            db_extension = [".sql", "db", "sqlite",
-                            "sqlite3", ".SQL", "DB", "SQLITE", "SQLITE3"]
-            for ext in db_extension:
-                if ext in path:
-                    self.menu.addAction(self.dbAction)
+            #db_extension = [".sql", "db", "sqlite",
+            #                "sqlite3", ".SQL", "DB", "SQLITE", "SQLITE3"]
+            #for ext in db_extension:
+            #    if ext in path:
+            #        self.menu.addAction(self.dbAction)
             # html viewer
-            url_extension = [".htm", ".html"]
-            for ext in url_extension:
-                if ext in path:
-                    self.menu.addAction(self.urlAction)
+            #url_extension = [".htm", ".html"]
+            #for ext in url_extension:
+            #    if ext in path:
+            #        self.menu.addAction(self.urlAction)
             # run in python
-            if path.endswith(".py"):
-                self.menu.addAction(self.py2Action)
-                self.menu.addAction(self.py3Action)
+            #if path.endswith(".py"):
+            #    self.menu.addAction(self.py2Action)
+            #    self.menu.addAction(self.py3Action)
             # image viewer
-            image_extension = [".png", "jpg", ".jpeg", ".bmp", "tif", ".tiff", ".pnm", ".svg",
-                               ".exif", ".gif"]
-            for ext in image_extension:
-                if ext in path or ext.upper() in path:
-                    self.menu.addAction(self.imageAction)
-            self.menu.addSeparator()
-            self.menu.addAction(self.delActionTrash)
-            self.menu.addAction(self.delAction)
-            self.menu.addSeparator()
-            if ".m3u" in path:
-                self.menu.addAction(self.playlistPlayerAction)
-            extensions = [".mp3", ".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
-                          ".wav", ".ogg", ".flv ", ".vob", ".ogv", ".ts", ".m2v", "m4v", "3gp", ".f4v"]
-            for ext in extensions:
-                if ext in path or ext.upper() in path:
-                    self.menu.addSeparator()
-                    self.menu.addAction(self.playAction)
-                    self.menu.addAction(self.playInternalAction)
-                    self.menu.addSeparator()
-            extensions = [".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
-                          ".wav", ".ogg", ".flv ", ".vob", ".ogv", ".ts", ".m2v", "m4v", "3gp", ".f4v"]
-            for ext in extensions:
-                if ext in path or ext.upper() in path:
-                    self.menu.addAction(self.mp3Action)
-                    self.menu.addSeparator()
-            if ".mp3" in path:
-                self.menu.addAction(self.playlistAction)
+            #image_extension = [".png", "jpg", ".jpeg", ".bmp", "tif", ".tiff", ".pnm", ".svg",
+            #                   ".exif", ".gif"]
+            #for ext in image_extension:
+            #    if ext in path or ext.upper() in path:
+            #        self.menu.addAction(self.imageAction)
+            #self.menu.addSeparator()
+            #self.menu.addAction(self.delActionTrash)
+            #self.menu.addAction(self.delAction)
+            #self.menu.addSeparator()
+            #if ".m3u" in path:
+            #    self.menu.addAction(self.playlistPlayerAction)
+            #extensions = [".mp3", ".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
+            #              ".wav", ".ogg", ".flv ", ".vob", ".ogv", ".ts", ".m2v", "m4v", "3gp", ".f4v"]
+            #for ext in extensions:
+            #    if ext in path or ext.upper() in path:
+            #        self.menu.addSeparator()
+            #        self.menu.addAction(self.playAction)
+            #        self.menu.addAction(self.playInternalAction)
+            #        self.menu.addSeparator()
+            #extensions = [".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
+            #              ".wav", ".ogg", ".flv ", ".vob", ".ogv", ".ts", ".m2v", "m4v", "3gp", ".f4v"]
+            #for ext in extensions:
+            #    if ext in path or ext.upper() in path:
+            #        self.menu.addAction(self.mp3Action)
+            #        self.menu.addSeparator()
+            #if ".mp3" in path:
+            #    self.menu.addAction(self.playlistAction)
             self.menu.addAction(self.refreshAction)
             self.menu.addAction(self.hiddenAction)
-            self.menu.addAction(self.zipFilesAction)
-            zip_extension = [".zip", ".tar.gz"]
-            for ext in zip_extension:
-                if ext in path:
-                    self.menu.addAction(self.unzipHereAction)
-                    self.menu.addAction(self.unzipToAction)
-            self.menu.addSeparator()
-            self.menu.addAction(self.helpAction)
+            #self.menu.addAction(self.zipFilesAction)
+            #zip_extension = [".zip", ".tar.gz"]
+            #for ext in zip_extension:
+            #    if ext in path:
+            #        self.menu.addAction(self.unzipHereAction)
+            #        self.menu.addAction(self.unzipToAction)
+            #self.menu.addSeparator()
+            #self.menu.addAction(self.helpAction)
             self.menu.popup(QCursor.pos())
         else:
             index = self.treeview.selectionModel().currentIndex()
@@ -1337,30 +1338,35 @@ class myWindow(QMainWindow):
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
         git_handler.git_add(dir, path)
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def gitrestore(self):
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
         git_handler.git_restore(dir, path)
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def gitrestore_staged(self):
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
         git_handler.git_restore_staged(dir, path)
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def gitrm_cached(self):
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
         git_handler.git_untrack(dir, path)
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def gitrm(self):
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
         path = self.fileModel.fileInfo(index).fileName()
         git_handler.git_rm(dir, path)
+        self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def gitmv(self):
         index = self.listview.selectionModel().currentIndex()
@@ -1371,6 +1377,7 @@ class myWindow(QMainWindow):
             self, 'Git MV', "Git mv:", QLineEdit.Normal, "", Qt.Dialog)
         if ok:
             git_handler.git_mv(dir, path, newname)
+            self.gitStatusList = git_handler.get_status_list(self.currentPath)
 
     def runPy2(self):
         if self.listview.selectionModel().hasSelection():
