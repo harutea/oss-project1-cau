@@ -8,6 +8,7 @@ https://github.com/Axel-Erfurt/QFilemanager
 **[OS]** Ubuntu 22.04.2
 **[Requirements]** Python3, PyQt5, PyQtWebEngine, send2trash
 
+sudo apt install python3  
 sudo apt install python3-pip  
 pip3 install PyQt5  
 pip3 install PyQtWebEngine  
@@ -17,8 +18,10 @@ sudo apt-get install --reinstall libxcb-xinerama0
 **Ubuntu 언어 English**
 
 sudo apt install git  
+git clone https://github.com/teacrepe/oss-project1-cau/tree/fix10  
 cd oss-project1-cau  
-cd QFilemanager
+cd QFilemanager  
+python3 QFileManager.py
 
 # 기능
 **1. [toolbar] git init & git commit button**
