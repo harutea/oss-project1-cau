@@ -2,26 +2,30 @@
 2023-1 Open Source SW Project 1
 
 # Original source code
-https://github.com/Axel-Erfurt/QFilemanager
+[QFilemanager](https://github.com/Axel-Erfurt/QFilemanager) by Axel-Erfurt
 
 # How to install
 **[OS]** Ubuntu 22.04.2
 **[Requirements]** Python3, PyQt5, PyQtWebEngine, send2trash
 
+```
 sudo apt install python3  
 sudo apt install python3-pip  
 pip3 install PyQt5  
 pip3 install PyQtWebEngine  
 pip3 install send2trash  
 sudo apt-get install --reinstall libxcb-xinerama0 
+```
 
 **Ubuntu 언어 English**
 
+```
 sudo apt install git  
-git clone https://github.com/teacrepe/oss-project1-cau/tree/fix10  
+git clone https://github.com/teacrepe/oss-project1-cau.git 
 cd oss-project1-cau  
 cd QFilemanager  
 python3 QFileManager.py
+```
 
 # 기능
 **1. [toolbar] git init & git commit button**
