@@ -17,7 +17,7 @@ pip3 install send2trash
 sudo apt-get install --reinstall libxcb-xinerama0 
 
 sudo apt install git  
-git config –global user.name [username]
+git config –-global user.name [username]
 git config --global user.email [you@example.com]
 git clone https://github.com/teacrepe/oss-project1-cau.git 
 cd oss-project1-cau  
