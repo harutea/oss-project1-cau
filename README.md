@@ -2,7 +2,7 @@
 2023-1 Open Source SW Project 1
 
 ## Original source code
-[QFilemanager](https://github.com/Axel-Erfurt/QFilemanager) by Axel-Erfurt
+* [QFilemanager](https://github.com/Axel-Erfurt/QFilemanager) by Axel-Erfurt
 
 ## How to install
 **[OS]** Ubuntu 22.04.2
