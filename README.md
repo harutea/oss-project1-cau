@@ -45,17 +45,25 @@ python3 QFileManager.py
 
 **3. context menu**
 각 파일에서 마우스 오른쪽 버튼을 클릭하면 각 git status에 맞는 메뉴가 나온다.
-- for untracked files:
-    git add
-- for modified files: 
-    git add
-    git restore
-- for staged files:
-    git restore --staged
-- for committed or unmodified files:
-    git rm --cached
-    git rm
-    git mv
+- for untracked files:  
+    git add  
+- for modified files:   
+    git add  
+    git restore  
+- for staged files:  
+    git restore --staged  
+- for committed or unmodified files:  
+    git rm --cached  
+    git rm  
+    git mv  
+- for staged_modified files:  
+    git add  
+    git restore  
+- for staged_untracked files:  
+    git add   
+
+**4. 새로고침**
+F5를 누르면 git status가 새로고침이 된다.
 
 # 커밋 컨벤션
 메시지 형식: [커밋 종류] [메시지] [#이슈]
