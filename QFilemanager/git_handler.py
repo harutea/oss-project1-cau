@@ -84,13 +84,13 @@ def get_status_list(dir_path):
     if not staged_index == -1:
         i = 2
         while '\t' in result[staged_index + i]:
-            if 'renamed' in result[staged_index + i]:
+            if 'renamed' in result[staged_index + i].split()[0]:
                 staged['renamed'].append(" ".join(result[staged_index + i].split()[3:]))
-            if 'new file' in result[staged_index + i]:
+            if 'new' in result[staged_index + i].split()[0]:
                 staged['new'].append(" ".join(result[staged_index + i].split()[2:]))
-            if 'modified' in result[staged_index + i]:
+            if 'modified' in result[staged_index + i].split()[0]:
                 staged['modified'].append(" ".join(result[staged_index + i].split()[1:]))
-            if 'deleted' in result[staged_index + i]:
+            if 'deleted' in result[staged_index + i].split()[0]:
                 staged['deleted'].append(" ".join(result[staged_index + i].split()[1:]))            
             i = i + 1
 
@@ -109,13 +109,13 @@ def get_status_list(dir_path):
     if not not_staged_index == -1:
         i = 3
         while '\t' in result[not_staged_index + i]:
-            if 'renamed' in result[not_staged_index + i]:
-                staged['renamed'].append(" ".join(result[not_staged_index + i].split()[3:]))
-            if 'new file' in result[not_staged_index + i]:
+            if 'renamed' in result[not_staged_index + i].split()[0]:
+                not_staged['renamed'].append(" ".join(result[not_staged_index + i].split()[3:]))
+            if 'new' in result[not_staged_index + i].split()[0]:
                 not_staged['new'].append(" ".join(result[not_staged_index + i].split()[2:]))
-            if 'modified' in result[not_staged_index + i]:
+            if 'modified' in result[not_staged_index + i].split()[0]:
                 not_staged['modified'].append(" ".join(result[not_staged_index + i].split()[1:]))
-            if 'deleted' in result[not_staged_index + i]:
+            if 'deleted' in result[not_staged_index + i].split()[0]:
                 not_staged['deleted'].append(" ".join(result[not_staged_index + i].split()[1:]))
             i = i + 1
 
