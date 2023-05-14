@@ -16,8 +16,8 @@ sudo apt-get install --reinstall libxcb-xinerama0
 
 **Ubuntu 언어 English**
 
-sudo apt install git
-cd oss-project1-cau
+sudo apt install git  
+cd oss-project1-cau  
 cd QFilemanager
 
 # 기능
