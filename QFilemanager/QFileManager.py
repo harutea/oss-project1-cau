@@ -14,6 +14,8 @@ import getpass
 import socket
 import typing
 from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QComboBox
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon, QPixmap
@@ -306,8 +308,13 @@ class myWindow(QMainWindow):
 
         #############################################################################################################################################################
         #############################################################################################################################################################
+        self.combo = QComboBox()
+
         self.tBar.addAction(self.gitinit)
         self.tBar.addAction(self.gitcommit)
+        self.tBar.addWidget(self.combo)
+        self.tBar.addAction(self.gitbranch)
+        self.combo.insertItems(1,["Create Branch","Delete Branch","Rename Branch","Checkout Branch"])
         self.tBar.addSeparator()
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -409,11 +416,17 @@ class myWindow(QMainWindow):
         self.getRowCount()
         self.fileModel.directoryLoaded.connect(self.refreshStatus)
 
+        self.currentBranch = "";
+
     @pyqtSlot()
     def refreshStatus(self):
         if git_handler.git_status(self.currentPath):
+            #self.currentBranch = git_handler.branch() 추후 추가
+            self.currentBranch = "Current Branch : " + "main"
+            self.setWindowTitle(self.currentBranch)
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
         else:
+            self.currentBranch = ""
             self.gitStatusList = False
         self.initButtonPulse()
 
@@ -506,6 +519,8 @@ class myWindow(QMainWindow):
         # self.treeview.addAction(self.initAction)
         self.gitcommit = QAction(
             QIcon("icons8-commit-git-64.png"), "git commit", triggered=self.commit)
+        self.gitbranch = QAction(
+            QIcon("gitbranch.png"), "git branch", triggered=self.branch)
         #############################################################################################################################################################
         #############################################################################################################################################################
 
@@ -897,10 +912,14 @@ class myWindow(QMainWindow):
         path = self.fileModel.fileInfo(index).path()
         self.treeview.setCurrentIndex(self.fileModel.index(path))
         self.treeview.setFocus()
-
+        print(self.combo.currentText())
         if git_handler.git_status(self.currentPath):
+            #self.currentBranch = git_handler.branch() 추후 추가
+            self.currentBranch = "Current Branch : " + "main"
+            self.setWindowTitle(self.currentBranch)
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
         else:
+            self.currentBranch = ""
             self.gitStatusList = False
         self.initButtonPulse()
         # print(self.gitStatusList)
@@ -1142,6 +1161,11 @@ class myWindow(QMainWindow):
             else:
                 ret = QMessageBox.No
         return
+
+    def branch(self):
+        index = self.listview.selectionModel().currentIndex()
+        path = self.fileModel.fileInfo(index).path()
+
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
