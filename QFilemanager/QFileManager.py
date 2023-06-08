@@ -1163,8 +1163,47 @@ class myWindow(QMainWindow):
         return
 
     def branch(self):
+        #git_handler 함수 이름 기다리는중
         index = self.listview.selectionModel().currentIndex()
         path = self.fileModel.fileInfo(index).path()
+        if self.combo.currentText() == "Create Branch":
+            dlg = QInputDialog(self)
+            newname, ok = dlg.getText(
+                self, 'Create Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
+            if ok:
+                print(newname)
+                #git_handler.git_branch(dir, path, newname)
+                #self.gitStatusList = git_handler.get_status_list(self.currentPath)
+        elif self.combo.currentText() == "Delete Branch":
+            dlg = QInputDialog(self)
+            items = ("main", "develop", "hello")
+            item, ok = dlg.getItem(
+                self, 'Delete Branch', "Select Branch", items, 0, False)
+            if ok and item:
+                print(item)
+                #git_handler.git_dbranch(dir, path, item)
+        elif self.combo.currentText() == "Rename Branch":
+            dlg = QInputDialog(self)
+            items = ("main", "develop", "hello")
+            item, ok = dlg.getItem(
+                self, 'Rename Branch', "Select Branch", items, 0, False)
+            if ok and item:
+                print(item)
+                dlg = QInputDialog(self)
+                newname, ok = dlg.getText(
+                    self, 'Rename Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
+                if ok:
+                    print(newname)
+                    #git_handler.git_rbranch(dir, path, item, newname)
+        elif self.combo.currentText() == "Checkout Branch":
+            dlg = QInputDialog(self)
+            items = ("main", "develop", "hello")
+            item, ok = dlg.getItem(
+                self, 'Checkout Branch', "Select Branch", items, 0, False)
+            if ok and item:
+                print(item)
+                #git_handler.cbranch(dir, path, item)
+
 
 
     def initButtonPulse(self):
