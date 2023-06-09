@@ -308,6 +308,7 @@ class myWindow(QMainWindow):
         #############################################################################################################################################################
         self.tBar.addAction(self.gitinit)
         self.tBar.addAction(self.gitcommit)
+        self.tBar.addAction(self.gitmerge)
         self.tBar.addSeparator()
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -506,6 +507,8 @@ class myWindow(QMainWindow):
         # self.treeview.addAction(self.initAction)
         self.gitcommit = QAction(
             QIcon("icons8-commit-git-64.png"), "git commit", triggered=self.commit)
+        self.gitmerge = QAction(
+            QIcon("icon\\merge.png"), "git merge", triggered=self.merge)
         #############################################################################################################################################################
         #############################################################################################################################################################
 
@@ -1085,6 +1088,15 @@ class myWindow(QMainWindow):
 
     #############################################################################################################################################################
     #############################################################################################################################################################
+
+    def handle_merged_branch_clicked(self):
+        merged_branch = self.list_widget.currentItem().text()
+        result = git_handler.git_merge(merged_branch)
+        if "conflicts" in result:
+            QMessageBox.critical(self, "fail", result)
+        else:
+            QMessageBox.about(self, "success", result)
+
     def init(self):
         index = self.listview.selectionModel().currentIndex()
         dir = self.currentPath
@@ -1142,6 +1154,26 @@ class myWindow(QMainWindow):
             else:
                 ret = QMessageBox.No
         return
+
+    def merge(self):
+        listofbranch = git_handler.git_branch(self.currentPath)
+        window = QWidget()
+        layout = QVBoxLayout(window)
+
+        now_branch = git_handler.git_branch_show_current(self.currentPath)
+
+        list_widget = QListWidget()
+
+        for branch in listofbranch:
+            if branch is not now_branch:
+                list_widget.addItem(branch)
+
+        list_widget.itemClicked.connect(handle_merged_branch_clicked)
+
+        layout.addWidget(list_widget)
+
+        window.show()
+
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
