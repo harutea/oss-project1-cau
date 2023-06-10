@@ -74,7 +74,7 @@ def git_commit(dir_path, commit_msg, branch):
         return False
     
     author = 'USER' # TODO: 현재 작성자 추가하기
-    diff = os.popen('git diff --staged').read().split('\n')
+    diff = os.popen('git diff --staged').read().split('\n') # 가장 최근 커밋과 add 된 부분 비교
     now = datetime.today().strftime('%Y-%m-%d %H:%M')
     before = None if len(commit_history[branch]) == 0 else commit_history[branch][-1]
     commit_history[branch].append(CommitObject(before, commit_msg, branch, author, diff, now))
@@ -158,4 +158,4 @@ def get_status_list(dir_path):
 
     return status_list
 
-commit_history = {'main': []}
+commit_history = {'master': []}

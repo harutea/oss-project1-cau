@@ -1180,6 +1180,7 @@ class myWindow(QMainWindow):
             newname, ok = dlg.getText(
                 self, 'Create Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
             if ok:
+                git_handler.commit_history[newname] = []
                 print(newname)
                 #git_handler.git_branch(dir, path, newname)
                 #self.gitStatusList = git_handler.get_status_list(self.currentPath)
@@ -1189,6 +1190,7 @@ class myWindow(QMainWindow):
             item, ok = dlg.getItem(
                 self, 'Delete Branch', "Select Branch", items, 0, False)
             if ok and item:
+                del git_handler.commit_history[newname]
                 print(item)
                 #git_handler.git_dbranch(dir, path, item)
         elif self.combo.currentText() == "Rename Branch":
@@ -1202,6 +1204,7 @@ class myWindow(QMainWindow):
                 newname, ok = dlg.getText(
                     self, 'Rename Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
                 if ok:
+                    git_handler.commit_history[newname] = git_handler.pop(item)
                     print(newname)
                     #git_handler.git_rbranch(dir, path, item, newname)
         elif self.combo.currentText() == "Checkout Branch":
