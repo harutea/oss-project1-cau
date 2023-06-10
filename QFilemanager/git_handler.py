@@ -1,4 +1,14 @@
 import os
+from datetime import datetime
+
+class CommitObject:
+    def __init__(self, before, commit_message, branch, author, diff, now):
+        self.before = before
+        self.commit_message = commit_message
+        self.branch = branch
+        self.author = author
+        self.diff = diff
+        self.now = now
 
 def git_status(dir_path):
     os.chdir(dir_path)
@@ -55,11 +65,19 @@ def git_mv(dir_path, file_name, new_name):
         return False
     return True
 
-def git_commit(dir_path, commit_msg):
+def git_commit(dir_path, commit_msg, branch):
+    global commit_history
+
     os.chdir(dir_path)
     result = os.popen('git commit -m "' + commit_msg + '"').read()
     if "fatal: " in result:
         return False
+    
+    author = 'USER' # TODO: 현재 작성자 추가하기
+    diff = os.popen('git diff --staged').read().split('\n')
+    now = datetime.today().strftime('%Y-%m-%d %H:%M')
+    before = None if len(commit_history[branch]) == 0 else commit_history[branch][-1]
+    commit_history[branch].append(CommitObject(before, commit_msg, branch, author, diff, now))
     return True
 
 def get_status_list(dir_path):
@@ -139,3 +157,5 @@ def get_status_list(dir_path):
     status_list['untracked'] = untracked
 
     return status_list
+
+commit_history = {'main': []}

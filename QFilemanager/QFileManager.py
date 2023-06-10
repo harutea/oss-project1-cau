@@ -1157,7 +1157,7 @@ class myWindow(QMainWindow):
                 self, 'Git', "Commit Message:", QLineEdit.Normal, "", Qt.Dialog)
             if ok:
                 if not newname == "":
-                    git_handler.git_commit(self.currentPath, newname)
+                    git_handler.git_commit(self.currentPath, newname, self.currentBranch)
                     self.gitStatusList = git_handler.get_status_list(self.currentPath)
                     return
                 else:
