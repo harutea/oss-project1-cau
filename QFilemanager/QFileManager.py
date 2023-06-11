@@ -1389,9 +1389,10 @@ class myWindow(QMainWindow):
     def tree(self):
 
         class LineWidget(QWidget):
-            def __init__(self):
+            def __init__(self, graph_data):
                 super().__init__()
                 self.initUI()
+                self.graph_data = graph_data
                 # self.paintEvent()
                 # self.draw_line()
 
@@ -1403,17 +1404,36 @@ class myWindow(QMainWindow):
             def paintEvent(self, e):
                 qp = QPainter()
                 qp.begin(self)
-                self.draw_line(qp)
+                self.draw_graph(qp)
 
-            def draw_line(self, qp):
+            def draw_graph(self, qp):
+                # draws graph from top(latest commit) to bottom
+                start_x = 230
+                start_y = 40
+                delta_x = 20
+                delta_y = 30
+                current_y = start_pos[1]
                 qp.setPen(QPen(Qt.blue, 8))
-                qp.drawLine(30, 230, 200, 50)
+
+                for graph_line in self.graph_data:
+                    curr_x = start_pos  
+                    for graph_symbol in graph_line:
+                        if graph_symbol == '*' or graph_symbol == '|':
+                            qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
+                        if graph_symbol == '/':
+                            qp.drawLine(curr_x, curr_y, curr_x - delta_x, curr_y + delta_y)
+                        if graph_symbol == '\\':
+                            qp.drawLine(curr_x, curr_y, curr_x + delta_x, curr_y + delta_y)
+                        curr_x += delta_x
+                    curr_y += delta_y
 
         # tmp = ["git tree"]
         # app2 = QApplication()
 
+        graph_data = git_handler.git_parse_log(self.currentPath)
+
         global widget
-        widget = LineWidget()
+        widget = LineWidget(graph_data)
         # widget.show()
         # sys.exit(app2.exec_())
 
