@@ -235,11 +235,12 @@ def git_clone(dir_path, branch_name, id, token, url):
     username = f"{id}"
     password = f"{token}"
     remote = f"{url}"
-    repo_name = url.split("/")[-1].split(".")[0]
+    repo_name = url.split("//")[-1]
+    print("repo_name : " + repo_name)
 
 
     # git clone https://username@github.com/username/repo_name
-    os.popen('git clone '+'https:/' + id +
-             '@github.com/' + id + repo_name+'.git')
+    os.popen('git clone '+'https://' + id +
+             '@' + repo_name)
 
     # Repo.clone_from(remote, dir_path)
