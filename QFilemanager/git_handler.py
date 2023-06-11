@@ -143,10 +143,6 @@ def get_status_list(dir_path):
 def git_create_branch(dir_path, branch_name):
     os.chdir(dir_path)
     result = os.popen('git branch ' + branch_name).read()
-    print("A\n" + result + "\nB")
-    if "fatal: " in result or result :
-        return False
-    return True
 
 def git_delete_branch(dir_path, branch_name):
     os.chdir(dir_path)
@@ -162,6 +158,7 @@ def git_show_branch_list(dir_path):
           i = i[2:]
           current_branch = i
           print('Current branch : ' + current_branch + '\n')
+
     print(branch_list)
     return branch_list, current_branch
 
@@ -176,6 +173,18 @@ def git_checkout_branch(dir_path, branch_name):
     os.chdir(dir_path)
     result = os.popen('git checkout ' + branch_name).read()
     print(branch_name+"으로 체크아웃 되었습니다")
+    print(result)
     if "Already on " in result:
         return False
+    return True
+
+def git_merge(dir_path, to_be_merged):
+    os.chdir(dir_path)
+    #print("Branch name " + to_be_merged + "\n")
+    result = os.popen('git merge ' + to_be_merged).read()
+    #print("Git Merge : " + result + "\n")
+    if "CONFLICT (content): " in result:
+        result = result.split('\n')
+        os.popen('git merge --abort')
+        return result
     return True
