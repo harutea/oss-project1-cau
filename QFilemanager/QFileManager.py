@@ -1357,19 +1357,18 @@ class myWindow(QMainWindow):
             def __init__(self):
                 super().__init__()
                 self.initUI()
-                self.paintEvent()
-                self.draw_line()
+                # self.paintEvent()
+                # self.draw_line()
 
             def initUI(self):
                 self.setWindowTitle("git tree")
                 self.resize(500, 500)
                 self.show()
 
-            def paintEvent(self):
+            def paintEvent(self, e):
                 qp = QPainter()
                 qp.begin(self)
                 self.draw_line(qp)
-                return qp
 
             def draw_line(self, qp):
                 qp.setPen(QPen(Qt.blue, 8))
@@ -1378,6 +1377,7 @@ class myWindow(QMainWindow):
         # tmp = ["git tree"]
         # app2 = QApplication()
 
+        global widget
         widget = LineWidget()
         # widget.show()
         # sys.exit(app2.exec_())
