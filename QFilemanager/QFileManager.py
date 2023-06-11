@@ -66,7 +66,7 @@ def gitstatus(file_list, file_name):
             result = gitStatus.Staged_Untracked
         else:
             result = gitStatus.Staged
-    elif file_name in file_list['not_staged']['renamed'] or file_name in file_list['not_staged']['new'] or  file_name in file_list['not_staged']['modified'] or file_name in \
+    elif file_name in file_list['not_staged']['renamed'] or file_name in file_list['not_staged']['new'] or file_name in file_list['not_staged']['modified'] or file_name in \
             file_list['not_staged']['deleted']:
         result = gitStatus.Modified
     elif file_name in file_list['untracked']:
@@ -285,21 +285,21 @@ class myWindow(QMainWindow):
         self.tBar.setMovable(False)
         self.tBar.setIconSize(QSize(32, 32))
         self.tBar.addAction(self.createFolderAction)
-        #self.tBar.addAction(self.copyFolderAction)
-        #self.tBar.addAction(self.pasteFolderAction)
-        #self.tBar.addSeparator()
-        #self.tBar.addAction(self.copyAction)
-        #self.tBar.addAction(self.cutAction)
-        #self.tBar.addAction(self.pasteAction)
-        #self.tBar.addSeparator()
-        #self.tBar.addAction(self.findFilesAction)
-        #self.tBar.addSeparator()
-        #self.tBar.addAction(self.delActionTrash)
-        #self.tBar.addAction(self.delAction)
-        #self.tBar.addSeparator()
-        #self.tBar.addAction(self.terminalAction)
-        #self.tBar.addSeparator()
-        #self.tBar.addAction(self.helpAction)
+        # self.tBar.addAction(self.copyFolderAction)
+        # self.tBar.addAction(self.pasteFolderAction)
+        # self.tBar.addSeparator()
+        # self.tBar.addAction(self.copyAction)
+        # self.tBar.addAction(self.cutAction)
+        # self.tBar.addAction(self.pasteAction)
+        # self.tBar.addSeparator()
+        # self.tBar.addAction(self.findFilesAction)
+        # self.tBar.addSeparator()
+        # self.tBar.addAction(self.delActionTrash)
+        # self.tBar.addAction(self.delAction)
+        # self.tBar.addSeparator()
+        # self.tBar.addAction(self.terminalAction)
+        # self.tBar.addSeparator()
+        # self.tBar.addAction(self.helpAction)
 
         # empty = QWidget()
         # empty.setMinimumWidth(60)
@@ -314,8 +314,10 @@ class myWindow(QMainWindow):
         self.tBar.addAction(self.gitcommit)
         self.tBar.addWidget(self.combo)
         self.tBar.addAction(self.gitbranch)
-        self.combo.insertItems(1,["Create Branch","Delete Branch","Rename Branch","Checkout Branch"])
+        self.combo.insertItems(
+            1, ["Create Branch", "Delete Branch", "Rename Branch", "Checkout Branch"])
         self.tBar.addAction(self.gitmerge)
+        self.tBar.addWidget(self.gitclone)
         self.tBar.addSeparator()
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -329,7 +331,7 @@ class myWindow(QMainWindow):
         self.tBar.addAction(self.btnBack)
         self.tBar.addAction(self.btnUp)
 
-        #self.tBar.addWidget(self.findfield)
+        # self.tBar.addWidget(self.findfield)
 
         self.dirModel = QFileSystemModel()
         self.dirModel.setReadOnly(False)
@@ -417,12 +419,13 @@ class myWindow(QMainWindow):
         self.getRowCount()
         self.fileModel.directoryLoaded.connect(self.refreshStatus)
 
-        self.currentBranch = "";
+        self.currentBranch = ""
 
     @pyqtSlot()
     def refreshStatus(self):
         if git_handler.git_status(self.currentPath):
-            self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
+            self.currentBranch = "Current Branch : " + \
+                git_handler.git_show_branch_list(self.currentPath)[1]
             self.setWindowTitle(self.currentBranch)
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
         else:
@@ -523,6 +526,9 @@ class myWindow(QMainWindow):
             QIcon("icon\\merge.png"), "git merge", triggered=self.merge)
         self.gitbranch = QAction(
             QIcon("gitbranch.png"), "git branch", triggered=self.branch)
+        self.gitclone = QAction(
+            QIcon("icon\\gitclone.png", "git clone", triggered=self.clone)
+        )
         #############################################################################################################################################################
         #############################################################################################################################################################
 
@@ -916,7 +922,8 @@ class myWindow(QMainWindow):
         self.treeview.setFocus()
         print(self.combo.currentText())
         if git_handler.git_status(self.currentPath):
-            self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
+            self.currentBranch = "Current Branch : " + \
+                git_handler.git_show_branch_list(self.currentPath)[1]
             self.setWindowTitle(self.currentBranch)
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
         else:
@@ -1124,31 +1131,32 @@ class myWindow(QMainWindow):
         pass
 
     def merge(self):
-        #print('--------------------------------')
-        #targetBranch = 'test'
-        #git_handler.git_merge(self.currentPath, targetBranch)
+        # print('--------------------------------')
+        # targetBranch = 'test'
+        # git_handler.git_merge(self.currentPath, targetBranch)
 
-        #listofbranch = git_handler.git_show_branch_list(self.currentPath)[0]
-        #window = QWidget()
-        #layout = QVBoxLayout(window)
+        # listofbranch = git_handler.git_show_branch_list(self.currentPath)[0]
+        # window = QWidget()
+        # layout = QVBoxLayout(window)
 
-        #now_branch = git_handler.git_show_branch_list(self.currentPath)[1]
+        # now_branch = git_handler.git_show_branch_list(self.currentPath)[1]
 
-        #list_widget = QListWidget()
+        # list_widget = QListWidget()
 
-        #for branch in listofbranch:
+        # for branch in listofbranch:
         #    if branch is not now_branch:
         #        list_widget.addItem(branch)
 
-        #list_widget.itemClicked.connect(self.handle_merged_branch_clicked)
+        # list_widget.itemClicked.connect(self.handle_merged_branch_clicked)
 
-        #layout.addWidget(list_widget)
+        # layout.addWidget(list_widget)
 
-        #window.show()
+        # window.show()
 
         dlg = QInputDialog(self)
         items = git_handler.git_show_branch_list(self.currentPath)[0]
-        items.remove('* ' + git_handler.git_show_branch_list(self.currentPath)[1])
+        items.remove(
+            '* ' + git_handler.git_show_branch_list(self.currentPath)[1])
         item, ok = dlg.getItem(
             self, 'Merge Branch', "Select Branch", items, 0, False)
         if ok and item:
@@ -1167,7 +1175,6 @@ class myWindow(QMainWindow):
                 errorBox.setStandardButtons(QMessageBox.Ok)
                 errorBox.setInformativeText("")
                 errorBox.exec()
-
 
     def commit(self):
         # print(self.gitStatusList)
@@ -1205,7 +1212,8 @@ class myWindow(QMainWindow):
             if ok:
                 if not newname == "":
                     git_handler.git_commit(self.currentPath, newname)
-                    self.gitStatusList = git_handler.get_status_list(self.currentPath)
+                    self.gitStatusList = git_handler.get_status_list(
+                        self.currentPath)
                     return
                 else:
                     errorBox = QMessageBox()
@@ -1219,7 +1227,7 @@ class myWindow(QMainWindow):
         return
 
     def branch(self):
-        #git_handler 함수 이름 기다리는중
+        # git_handler 함수 이름 기다리는중
         if not git_handler.git_status(self.currentPath):
             return
         index = self.listview.selectionModel().currentIndex()
@@ -1232,7 +1240,8 @@ class myWindow(QMainWindow):
                 if '  ' + newname in git_handler.git_show_branch_list(self.currentPath)[0]:
                     errorBox = QMessageBox()
                     errorBox.setWindowTitle("Error")
-                    errorBox.setText("A branch named " + newname + " already exists")
+                    errorBox.setText("A branch named " +
+                                     newname + " already exists")
                     errorBox.setStandardButtons(QMessageBox.Ok)
                     errorBox.setInformativeText("")
                     errorBox.exec()
@@ -1243,9 +1252,9 @@ class myWindow(QMainWindow):
                     errorBox.setStandardButtons(QMessageBox.Ok)
                     errorBox.setInformativeText("")
                     errorBox.exec()
-                #print(newname)
-                #git_handler.git_branch(dir, path, newname)
-                #self.gitStatusList = git_handler.get_status_list(self.currentPath)
+                # print(newname)
+                # git_handler.git_branch(dir, path, newname)
+                # self.gitStatusList = git_handler.get_status_list(self.currentPath)
         elif self.combo.currentText() == "Delete Branch":
             dlg = QInputDialog(self)
             items = git_handler.git_show_branch_list(self.currentPath)[0]
@@ -1254,7 +1263,7 @@ class myWindow(QMainWindow):
             if ok and item:
                 git_handler.git_delete_branch(self.currentPath, item)
                 print(item)
-                #git_handler.git_dbranch(dir, path, item)
+                # git_handler.git_dbranch(dir, path, item)
         elif self.combo.currentText() == "Rename Branch":
             dlg = QInputDialog(self)
             items = git_handler.git_show_branch_list(self.currentPath)[0]
@@ -1271,22 +1280,25 @@ class myWindow(QMainWindow):
                     if '  ' + newname in git_handler.git_show_branch_list(self.currentPath)[0]:
                         errorBox = QMessageBox()
                         errorBox.setWindowTitle("Error")
-                        errorBox.setText("A branch named " + newname + " already exists")
+                        errorBox.setText("A branch named " +
+                                         newname + " already exists")
                         errorBox.setStandardButtons(QMessageBox.Ok)
                         errorBox.setInformativeText("")
                         errorBox.exec()
                     if newname == git_handler.git_show_branch_list(self.currentPath)[1]:
                         errorBox = QMessageBox()
                         errorBox.setWindowTitle("Error")
-                        errorBox.setText("You cannot name " + newname + " because you are currently on it")
+                        errorBox.setText(
+                            "You cannot name " + newname + " because you are currently on it")
                         errorBox.setStandardButtons(QMessageBox.Ok)
                         errorBox.setInformativeText("")
                         errorBox.exec()
                     print(newname)
             git_handler.git_checkout_branch(self.currentPath, temp)
-            self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
+            self.currentBranch = "Current Branch : " + \
+                git_handler.git_show_branch_list(self.currentPath)[1]
             self.setWindowTitle(self.currentBranch)
-                    #git_handler.git_rbranch(dir, path, item, newname)
+            # git_handler.git_rbranch(dir, path, item, newname)
         elif self.combo.currentText() == "Checkout Branch":
             dlg = QInputDialog(self)
             items = git_handler.git_show_branch_list(self.currentPath)[0]
@@ -1296,16 +1308,23 @@ class myWindow(QMainWindow):
                 if '* ' in item:
                     errorBox = QMessageBox()
                     errorBox.setWindowTitle("Error")
-                    errorBox.setText("You are already on " + git_handler.git_show_branch_list(self.currentPath)[1])
+                    errorBox.setText(
+                        "You are already on " + git_handler.git_show_branch_list(self.currentPath)[1])
                     errorBox.setStandardButtons(QMessageBox.Ok)
                     errorBox.setInformativeText("")
                     errorBox.exec()
-                self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
+                self.currentBranch = "Current Branch : " + \
+                    git_handler.git_show_branch_list(self.currentPath)[1]
                 self.setWindowTitle(self.currentBranch)
                 print(item)
-                #git_handler.cbranch(dir, path, item)
+                # git_handler.cbranch(dir, path, item)
 
-
+    def clone(self):
+        address, ok = QInputDialog.getText(
+            self, 'repository address', 'Enter Github repository address:')
+        if ok:
+            print('Github address:', address)
+        result = git_handler.git_clone(address)
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
@@ -1380,75 +1399,75 @@ class myWindow(QMainWindow):
 
             self.menu.addSeparator()
             self.menu.addAction(self.createFolderAction)
-            #self.menu.addAction(self.openAction)
-            #self.menu.addAction(self.openActionText)
-            #self.menu.addAction(self.openActionTextRoot)
-            #self.menu.addSeparator()
-            #if os.path.isdir(path):
-                #self.menu.addAction(self.newWinAction)
+            # self.menu.addAction(self.openAction)
+            # self.menu.addAction(self.openActionText)
+            # self.menu.addAction(self.openActionTextRoot)
+            # self.menu.addSeparator()
+            # if os.path.isdir(path):
+            # self.menu.addAction(self.newWinAction)
             self.menu.addSeparator()
             self.menu.addAction(self.renameAction)
             self.menu.addSeparator()
-            #self.menu.addAction(self.copyAction)
-            #self.menu.addAction(self.cutAction)
-            #self.menu.addAction(self.pasteAction)
+            # self.menu.addAction(self.copyAction)
+            # self.menu.addAction(self.cutAction)
+            # self.menu.addAction(self.pasteAction)
             #            self.menu.addAction(self.pasteFolderAction)
-            #self.menu.addAction(self.terminalAction)
-            #self.menu.addAction(self.startInTerminalAction)
-            #self.menu.addAction(self.executableAction)
+            # self.menu.addAction(self.terminalAction)
+            # self.menu.addAction(self.startInTerminalAction)
+            # self.menu.addAction(self.executableAction)
             # database viewer
-            #db_extension = [".sql", "db", "sqlite",
+            # db_extension = [".sql", "db", "sqlite",
             #                "sqlite3", ".SQL", "DB", "SQLITE", "SQLITE3"]
-            #for ext in db_extension:
+            # for ext in db_extension:
             #    if ext in path:
             #        self.menu.addAction(self.dbAction)
             # html viewer
-            #url_extension = [".htm", ".html"]
-            #for ext in url_extension:
+            # url_extension = [".htm", ".html"]
+            # for ext in url_extension:
             #    if ext in path:
             #        self.menu.addAction(self.urlAction)
             # run in python
-            #if path.endswith(".py"):
+            # if path.endswith(".py"):
             #    self.menu.addAction(self.py2Action)
             #    self.menu.addAction(self.py3Action)
             # image viewer
-            #image_extension = [".png", "jpg", ".jpeg", ".bmp", "tif", ".tiff", ".pnm", ".svg",
+            # image_extension = [".png", "jpg", ".jpeg", ".bmp", "tif", ".tiff", ".pnm", ".svg",
             #                   ".exif", ".gif"]
-            #for ext in image_extension:
+            # for ext in image_extension:
             #    if ext in path or ext.upper() in path:
             #        self.menu.addAction(self.imageAction)
-            #self.menu.addSeparator()
-            #self.menu.addAction(self.delActionTrash)
-            #self.menu.addAction(self.delAction)
-            #self.menu.addSeparator()
-            #if ".m3u" in path:
+            # self.menu.addSeparator()
+            # self.menu.addAction(self.delActionTrash)
+            # self.menu.addAction(self.delAction)
+            # self.menu.addSeparator()
+            # if ".m3u" in path:
             #    self.menu.addAction(self.playlistPlayerAction)
-            #extensions = [".mp3", ".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
+            # extensions = [".mp3", ".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
             #              ".wav", ".ogg", ".flv ", ".vob", ".ogv", ".ts", ".m2v", "m4v", "3gp", ".f4v"]
-            #for ext in extensions:
+            # for ext in extensions:
             #    if ext in path or ext.upper() in path:
             #        self.menu.addSeparator()
             #        self.menu.addAction(self.playAction)
             #        self.menu.addAction(self.playInternalAction)
             #        self.menu.addSeparator()
-            #extensions = [".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
+            # extensions = [".mp4", "mpg", ".m4a", ".mpeg", "avi", ".mkv", ".webm",
             #              ".wav", ".ogg", ".flv ", ".vob", ".ogv", ".ts", ".m2v", "m4v", "3gp", ".f4v"]
-            #for ext in extensions:
+            # for ext in extensions:
             #    if ext in path or ext.upper() in path:
             #        self.menu.addAction(self.mp3Action)
             #        self.menu.addSeparator()
-            #if ".mp3" in path:
+            # if ".mp3" in path:
             #    self.menu.addAction(self.playlistAction)
             self.menu.addAction(self.refreshAction)
             self.menu.addAction(self.hiddenAction)
-            #self.menu.addAction(self.zipFilesAction)
-            #zip_extension = [".zip", ".tar.gz"]
-            #for ext in zip_extension:
+            # self.menu.addAction(self.zipFilesAction)
+            # zip_extension = [".zip", ".tar.gz"]
+            # for ext in zip_extension:
             #    if ext in path:
             #        self.menu.addAction(self.unzipHereAction)
             #        self.menu.addAction(self.unzipToAction)
-            #self.menu.addSeparator()
-            #self.menu.addAction(self.helpAction)
+            # self.menu.addSeparator()
+            # self.menu.addAction(self.helpAction)
             self.menu.popup(QCursor.pos())
         else:
             index = self.treeview.selectionModel().currentIndex()
