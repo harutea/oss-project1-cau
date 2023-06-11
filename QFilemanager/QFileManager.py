@@ -1180,23 +1180,26 @@ class myWindow(QMainWindow):
             newname, ok = dlg.getText(
                 self, 'Create Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
             if ok:
+                git_handler.git_create_branch(self.currentPath, newname)
                 print(newname)
                 #git_handler.git_branch(dir, path, newname)
                 #self.gitStatusList = git_handler.get_status_list(self.currentPath)
         elif self.combo.currentText() == "Delete Branch":
             dlg = QInputDialog(self)
-            items = ("main", "develop", "hello")
+            items = git_handler.git_show_branch_list(self.currentPath, newname)
             item, ok = dlg.getItem(
                 self, 'Delete Branch', "Select Branch", items, 0, False)
             if ok and item:
+                git_handler.git_delete_branch(self.currentPath, newname)
                 print(item)
                 #git_handler.git_dbranch(dir, path, item)
         elif self.combo.currentText() == "Rename Branch":
             dlg = QInputDialog(self)
-            items = ("main", "develop", "hello")
+            items = git_handler.git_show_branch_list(self.currentPath, newname)
             item, ok = dlg.getItem(
                 self, 'Rename Branch', "Select Branch", items, 0, False)
             if ok and item:
+                git_handler.git_rename_branch(self.currentPath, newname)
                 print(item)
                 dlg = QInputDialog(self)
                 newname, ok = dlg.getText(
@@ -1206,7 +1209,7 @@ class myWindow(QMainWindow):
                     #git_handler.git_rbranch(dir, path, item, newname)
         elif self.combo.currentText() == "Checkout Branch":
             dlg = QInputDialog(self)
-            items = ("main", "develop", "hello")
+            items = git_handler.git_show_branch_list(self.currentPath, newname)
             item, ok = dlg.getItem(
                 self, 'Checkout Branch', "Select Branch", items, 0, False)
             if ok and item:

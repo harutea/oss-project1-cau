@@ -139,3 +139,32 @@ def get_status_list(dir_path):
     status_list['untracked'] = untracked
 
     return status_list
+
+def git_create_branch(dir_path, branch_name):
+    os.chdir(dir_path)
+    result = os.popen('git branch '+branch_name).read()
+    if "false " in result:
+        return False
+    return True
+
+def git_delete_branch(dir_path, branch_name):
+    os.chdir(dir_path)
+    result = os.popen('git branch -d '+branch_name).read()
+    return result
+
+def git_show_branch_list(dir_path, branch_name):
+    os.chdir(dir_path)
+    result = os.popen('git branch').read()
+    return result
+
+def git_rename_branch(dir_path, branch_name):
+    os.chdir(dir_path)
+    result = os.popen('git branch -m '+branch_name).read()
+    if "false " in result:
+        return False
+    return True
+
+def git_checkout_branch(dir_path, branch_name):
+    os.chdir(dir_path)
+    result = os.popen('git checkout '+branch_name).read()
+    print(branch_name+"으로 체크아웃 되었습니다")
