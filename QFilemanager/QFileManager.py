@@ -1320,15 +1320,50 @@ class myWindow(QMainWindow):
                 # git_handler.cbranch(dir, path, item)
 
     def clone(self):
-        address, ok = QInputDialog.getText(
-            self, 'repository address', 'Enter Github repository address:')
-        if ok:
-            print('Github address:', address)
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("Git Clone")
+        str = 'Is the cloning repository public?'
+        msgBox.setText(str)
+        #msgBox.setInformativeText("Is the cloning repository is public")
+        msgBox.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
+        # msgBox.resize()
+        ret = msgBox.exec()
+        if ret == QMessageBox.Yes:
+            address, ok = QInputDialog.getText(
+                self, 'repository address', 'Enter Github repository address:')
+            if ok:
+                if not git_handler.git_clone(self.currentPath, self.currentBranch, '', '', address):
+                    errorBox = QMessageBox()
+                    errorBox.setWindowTitle("Error")
+                    errorBox.setText(
+                        address + " is not a valid repository address")
+                    errorBox.setStandardButtons(QMessageBox.Ok)
+                    errorBox.setInformativeText("")
+                    errorBox.exec()
+        elif ret == QMessageBox.No:
+            address, ok = QInputDialog.getText(
+                self, 'repository address', 'Enter Github repository address:')
+            if ok:
+                id, ok = QInputDialog.getText(
+                    self, 'username', 'Enter Github username:')
+                if ok:
+                    token, ok = QInputDialog.getText(
+                        self, 'token', 'Enter Github token:')
+                #print('Github address:', address)
+                    if ok:
+                        if not git_handler.git_clone(self.currentPath, self.currentBranch, id, token, address):
+                            errorBox = QMessageBox()
+                            errorBox.setWindowTitle("Error")
+                            errorBox.setText(
+                                address + " is not a valid repository address or " +
+                                id + " is not a valid user name or " +
+                                token + " is not a valid token")
+                            errorBox.setStandardButtons(QMessageBox.Ok)
+                            errorBox.setInformativeText("")
+                            errorBox.exec()
+                #print("======================================")
+                #print(result)
 
-            result = git_handler.git_clone(
-                self.currentPath, self.currentBranch, "KIMIS12", "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", address)
-            print("======================================")
-            print(result)
 
             # if "Username" in result:
             #     id, _ = QInputDialog.getText(
