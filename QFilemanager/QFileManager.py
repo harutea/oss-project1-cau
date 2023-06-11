@@ -421,8 +421,7 @@ class myWindow(QMainWindow):
     @pyqtSlot()
     def refreshStatus(self):
         if git_handler.git_status(self.currentPath):
-            #self.currentBranch = git_handler.branch() 추후 추가
-            self.currentBranch = "Current Branch : " + "main"
+            self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
             self.setWindowTitle(self.currentBranch)
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
         else:
@@ -914,8 +913,7 @@ class myWindow(QMainWindow):
         self.treeview.setFocus()
         print(self.combo.currentText())
         if git_handler.git_status(self.currentPath):
-            #self.currentBranch = git_handler.branch() 추후 추가
-            self.currentBranch = "Current Branch : " + "main"
+            self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
             self.setWindowTitle(self.currentBranch)
             self.gitStatusList = git_handler.get_status_list(self.currentPath)
         else:
@@ -1180,39 +1178,65 @@ class myWindow(QMainWindow):
             newname, ok = dlg.getText(
                 self, 'Create Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
             if ok:
-                git_handler.git_create_branch(self.currentPath, newname)
+                if not git_handler.git_create_branch(self.currentPath, newname):
+                    errorBox = QMessageBox()
+                    errorBox.setWindowTitle("Error")
+                    errorBox.setText("A branch named " + newname + "already exists")
+                    errorBox.setStandardButtons(QMessageBox.Ok)
+                    errorBox.setInformativeText("")
+                    errorBox.exec()
                 print(newname)
                 #git_handler.git_branch(dir, path, newname)
                 #self.gitStatusList = git_handler.get_status_list(self.currentPath)
         elif self.combo.currentText() == "Delete Branch":
             dlg = QInputDialog(self)
-            items = git_handler.git_show_branch_list(self.currentPath, newname)
+            items = git_handler.git_show_branch_list(self.currentPath)[0]
             item, ok = dlg.getItem(
                 self, 'Delete Branch', "Select Branch", items, 0, False)
             if ok and item:
-                git_handler.git_delete_branch(self.currentPath, newname)
+                git_handler.git_delete_branch(self.currentPath, item)
                 print(item)
                 #git_handler.git_dbranch(dir, path, item)
         elif self.combo.currentText() == "Rename Branch":
             dlg = QInputDialog(self)
-            items = git_handler.git_show_branch_list(self.currentPath, newname)
+            items = git_handler.git_show_branch_list(self.currentPath)[0]
+            temp = git_handler.git_show_branch_list(self.currentPath)[1]
             item, ok = dlg.getItem(
                 self, 'Rename Branch', "Select Branch", items, 0, False)
             if ok and item:
-                git_handler.git_rename_branch(self.currentPath, newname)
                 print(item)
                 dlg = QInputDialog(self)
                 newname, ok = dlg.getText(
                     self, 'Rename Branch', "Branch Name:", QLineEdit.Normal, "", Qt.Dialog)
                 if ok:
+                    git_handler.git_checkout_branch(self.currentPath, item)
+                    if not git_handler.git_rename_branch(self.currentPath, newname):
+                        errorBox = QMessageBox()
+                        errorBox.setWindowTitle("Error")
+                        errorBox.setText("A branch named " + newname + "already exists")
+                        errorBox.setStandardButtons(QMessageBox.Ok)
+                        errorBox.setInformativeText("")
+                        errorBox.exec()
                     print(newname)
+            git_handler.git_checkout_branch(self.currentPath, temp)
+            self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
+            self.setWindowTitle(self.currentBranch)
                     #git_handler.git_rbranch(dir, path, item, newname)
         elif self.combo.currentText() == "Checkout Branch":
             dlg = QInputDialog(self)
-            items = git_handler.git_show_branch_list(self.currentPath, newname)
+            items = git_handler.git_show_branch_list(self.currentPath)[0]
             item, ok = dlg.getItem(
                 self, 'Checkout Branch', "Select Branch", items, 0, False)
             if ok and item:
+                if not git_handler.git_checkout_branch(self.currentPath, item):
+                    errorBox = QMessageBox()
+                    errorBox.setWindowTitle("Error")
+                    errorBox.setText("You are already on " + item)
+                    errorBox.setStandardButtons(QMessageBox.Ok)
+                    errorBox.setInformativeText("")
+                    errorBox.exec()
+                self.currentBranch = "Current Branch : " + git_handler.git_show_branch_list(self.currentPath)[1]
+                self.setWindowTitle(self.currentBranch)
                 print(item)
                 #git_handler.cbranch(dir, path, item)
 

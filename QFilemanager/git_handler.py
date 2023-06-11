@@ -142,29 +142,40 @@ def get_status_list(dir_path):
 
 def git_create_branch(dir_path, branch_name):
     os.chdir(dir_path)
-    result = os.popen('git branch '+branch_name).read()
-    if "false " in result:
+    result = os.popen('git branch ' + branch_name).read()
+    print("A\n" + result + "\nB")
+    if "fatal: " in result or result :
         return False
     return True
 
 def git_delete_branch(dir_path, branch_name):
     os.chdir(dir_path)
-    result = os.popen('git branch -d '+branch_name).read()
-    return result
+    result = os.popen('git branch -d ' + branch_name).read()
 
-def git_show_branch_list(dir_path, branch_name):
+def git_show_branch_list(dir_path):
     os.chdir(dir_path)
     result = os.popen('git branch').read()
-    return result
+    branch_list = result.strip().split('\n')
+    current_branch = 'main'
+    for i in branch_list:
+        if '*' in i:
+          i = i[2:]
+          current_branch = i
+          print('Current branch : ' + current_branch + '\n')
+    print(branch_list)
+    return branch_list, current_branch
 
 def git_rename_branch(dir_path, branch_name):
     os.chdir(dir_path)
-    result = os.popen('git branch -m '+branch_name).read()
-    if "false " in result:
+    result = os.popen('git branch -m ' + branch_name).read()
+    if "fatal: " in result:
         return False
     return True
 
 def git_checkout_branch(dir_path, branch_name):
     os.chdir(dir_path)
-    result = os.popen('git checkout '+branch_name).read()
+    result = os.popen('git checkout ' + branch_name).read()
     print(branch_name+"으로 체크아웃 되었습니다")
+    if "Already on " in result:
+        return False
+    return True
