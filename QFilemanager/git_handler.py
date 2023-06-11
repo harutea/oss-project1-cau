@@ -1,5 +1,6 @@
 import os
 
+
 def git_status(dir_path):
     os.chdir(dir_path)
     result = os.popen('git status').read()
@@ -8,6 +9,7 @@ def git_status(dir_path):
         return False
     return True
 
+
 def git_init(dir_path):
     os.chdir(dir_path)
     result = os.popen('git init').read()
@@ -15,10 +17,12 @@ def git_init(dir_path):
         return False
     return True
 
+
 def git_add(dir_path, file_name):
     os.chdir(dir_path)
     result = os.popen('git add "' + file_name + '"').read()
     return True
+
 
 def git_restore(dir_path, file_name):
     os.chdir(dir_path)
@@ -27,12 +31,14 @@ def git_restore(dir_path, file_name):
         return False
     return True
 
+
 def git_restore_staged(dir_path, file_name):
     os.chdir(dir_path)
     result = os.popen('git restore --staged "' + file_name + '"').read()
     if "fatal: " in result:
         return False
     return True
+
 
 def git_untrack(dir_path, file_name):
     os.chdir(dir_path)
@@ -41,12 +47,14 @@ def git_untrack(dir_path, file_name):
         return False
     return True
 
+
 def git_rm(dir_path, file_name):
     os.chdir(dir_path)
     result = os.popen('git rm "' + file_name + '"').read()
     if "fatal: " in result:
         return False
     return True
+
 
 def git_mv(dir_path, file_name, new_name):
     os.chdir(dir_path)
@@ -55,12 +63,14 @@ def git_mv(dir_path, file_name, new_name):
         return False
     return True
 
+
 def git_commit(dir_path, commit_msg):
     os.chdir(dir_path)
     result = os.popen('git commit -m "' + commit_msg + '"').read()
     if "fatal: " in result:
         return False
     return True
+
 
 def get_status_list(dir_path):
     os.chdir(dir_path)
@@ -69,12 +79,11 @@ def get_status_list(dir_path):
 
     result = os.popen('git status').read().split('\n')
 
-
     # for changes staged
     staged_index = -1
     if 'Changes to be committed:' in result:
         staged_index = result.index('Changes to be committed:')
-    
+
     staged = {}
     staged['renamed'] = []
     staged['new'] = []
@@ -85,15 +94,18 @@ def get_status_list(dir_path):
         i = 2
         while '\t' in result[staged_index + i]:
             if 'renamed' in result[staged_index + i].split()[0]:
-                staged['renamed'].append(" ".join(result[staged_index + i].split()[3:]))
+                staged['renamed'].append(
+                    " ".join(result[staged_index + i].split()[3:]))
             if 'new' in result[staged_index + i].split()[0]:
-                staged['new'].append(" ".join(result[staged_index + i].split()[2:]))
+                staged['new'].append(
+                    " ".join(result[staged_index + i].split()[2:]))
             if 'modified' in result[staged_index + i].split()[0]:
-                staged['modified'].append(" ".join(result[staged_index + i].split()[1:]))
+                staged['modified'].append(
+                    " ".join(result[staged_index + i].split()[1:]))
             if 'deleted' in result[staged_index + i].split()[0]:
-                staged['deleted'].append(" ".join(result[staged_index + i].split()[1:]))            
+                staged['deleted'].append(
+                    " ".join(result[staged_index + i].split()[1:]))
             i = i + 1
-
 
     # for changes not staged
     not_staged_index = -1
@@ -110,29 +122,31 @@ def get_status_list(dir_path):
         i = 3
         while '\t' in result[not_staged_index + i]:
             if 'renamed' in result[not_staged_index + i].split()[0]:
-                not_staged['renamed'].append(" ".join(result[not_staged_index + i].split()[3:]))
+                not_staged['renamed'].append(
+                    " ".join(result[not_staged_index + i].split()[3:]))
             if 'new' in result[not_staged_index + i].split()[0]:
-                not_staged['new'].append(" ".join(result[not_staged_index + i].split()[2:]))
+                not_staged['new'].append(
+                    " ".join(result[not_staged_index + i].split()[2:]))
             if 'modified' in result[not_staged_index + i].split()[0]:
-                not_staged['modified'].append(" ".join(result[not_staged_index + i].split()[1:]))
+                not_staged['modified'].append(
+                    " ".join(result[not_staged_index + i].split()[1:]))
             if 'deleted' in result[not_staged_index + i].split()[0]:
-                not_staged['deleted'].append(" ".join(result[not_staged_index + i].split()[1:]))
+                not_staged['deleted'].append(
+                    " ".join(result[not_staged_index + i].split()[1:]))
             i = i + 1
-
 
     # for untracked files
     untracked_index = -1
     if 'Untracked files:' in result:
         untracked_index = result.index('Untracked files:')
-    
+
     untracked = []
-    
+
     if not untracked_index == -1:
         i = 2
         while '\t' in result[untracked_index + i]:
             untracked.append(" ".join(result[untracked_index + i].split()[0:]))
             i = i + 1
-    
 
     status_list['staged'] = staged
     status_list['not_staged'] = not_staged
@@ -140,13 +154,16 @@ def get_status_list(dir_path):
 
     return status_list
 
+
 def git_create_branch(dir_path, branch_name):
     os.chdir(dir_path)
     result = os.popen('git branch ' + branch_name).read()
 
+
 def git_delete_branch(dir_path, branch_name):
     os.chdir(dir_path)
     result = os.popen('git branch -d ' + branch_name).read()
+
 
 def git_show_branch_list(dir_path):
     os.chdir(dir_path)
@@ -155,12 +172,13 @@ def git_show_branch_list(dir_path):
     current_branch = 'main'
     for i in branch_list:
         if '*' in i:
-          i = i[2:]
-          current_branch = i
-          print('Current branch : ' + current_branch + '\n')
+            i = i[2:]
+            current_branch = i
+            print('Current branch : ' + current_branch + '\n')
 
     print(branch_list)
     return branch_list, current_branch
+
 
 def git_rename_branch(dir_path, branch_name):
     os.chdir(dir_path)
@@ -168,6 +186,7 @@ def git_rename_branch(dir_path, branch_name):
     if "fatal: " in result:
         return False
     return True
+
 
 def git_checkout_branch(dir_path, branch_name):
     os.chdir(dir_path)
@@ -178,21 +197,23 @@ def git_checkout_branch(dir_path, branch_name):
         return False
     return True
 
+
 def git_merge(dir_path, to_be_merged):
     os.chdir(dir_path)
-    #print("Branch name " + to_be_merged + "\n")
+    # print("Branch name " + to_be_merged + "\n")
     result = os.popen('git merge ' + to_be_merged).read()
-    #print("Git Merge : " + result + "\n")
+    # print("Git Merge : " + result + "\n")
     if "CONFLICT (content): " in result:
         result = result.split('\n')
         os.popen('git merge --abort')
         return result
     return True
 
+
 def git_parse_log(dir_path):
     os.chdir(dir_path)
     result = os.popen('git log --oneline --graph').read().strip().split('\n')
-    
+
     graph_symbol = ['*', '|', '/', '\\']
     graph = []
 
@@ -202,5 +223,23 @@ def git_parse_log(dir_path):
             if result_symbol in graph_symbol:
                 graph_line.append(result_symbol)
         graph.append(graph_line)
-    
+
     return graph
+
+
+def git_clone(dir_path, branch_name, id, token, url):
+    from git import Repo
+
+    os.chdir(dir_path)
+
+    username = f"{id}"
+    password = f"{token}"
+    remote = f"{url}"
+    repo_name = url.split("/")[-1].split(".")[0]
+
+
+    # git clone https://username@github.com/username/repo_name
+    os.popen('git clone '+'https:/' + id +
+             '@github.com/' + id + repo_name+'.git')
+
+    # Repo.clone_from(remote, dir_path)

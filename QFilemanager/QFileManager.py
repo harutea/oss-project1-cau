@@ -34,6 +34,7 @@ import stat
 from send2trash import send2trash
 import git_handler
 from enum import Enum
+from git import repo
 
 
 #############################################################################################################################################################
@@ -317,7 +318,7 @@ class myWindow(QMainWindow):
         self.combo.insertItems(
             1, ["Create Branch", "Delete Branch", "Rename Branch", "Checkout Branch"])
         self.tBar.addAction(self.gitmerge)
-        self.tBar.addWidget(self.gitclone)
+        self.tBar.addAction(self.gitclone)
         self.tBar.addSeparator()
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -527,8 +528,7 @@ class myWindow(QMainWindow):
         self.gitbranch = QAction(
             QIcon("gitbranch.png"), "git branch", triggered=self.branch)
         self.gitclone = QAction(
-            QIcon("icon\\gitclone.png", "git clone", triggered=self.clone)
-        )
+            QIcon("icon\\gitclone.png"), "git clone", triggered=self.clone)
         #############################################################################################################################################################
         #############################################################################################################################################################
 
@@ -1324,7 +1324,26 @@ class myWindow(QMainWindow):
             self, 'repository address', 'Enter Github repository address:')
         if ok:
             print('Github address:', address)
-        result = git_handler.git_clone(address)
+
+            result = git_handler.git_clone(
+                self.currentPath, self.currentBranch, "KIMIS12", "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", address)
+            print("======================================")
+            print(result)
+
+            # if "Username" in result:
+            #     id, _ = QInputDialog.getText(
+            #         self, 'userid', "Enter Github Id: ")
+            #     token, _ = QInputDialog.getText(
+            #         self, 'accesstoken', "Enter Github Access Token: ")
+
+            #     repos_name = address.split("/")[-1].split(".")[0]
+            #     address = "https://" + id + ":" + token + "@github.com/" + id+"/" + repos_name
+
+            # git_handler.git_clone(
+            #     self.currentPath, self.currentBranch, id, token, address)
+
+            # https: // github.com/KIMIS12/capstonIMAGEtest1.git
+            # git clone https://사용자ID:개인액세스토큰@github.com/사용자ID/저장소이름.git
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
