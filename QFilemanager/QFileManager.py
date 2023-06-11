@@ -35,6 +35,8 @@ from send2trash import send2trash
 import git_handler
 from enum import Enum
 from git import repo
+from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtCore import Qt
 
 
 #############################################################################################################################################################
@@ -319,6 +321,7 @@ class myWindow(QMainWindow):
             1, ["Create Branch", "Delete Branch", "Rename Branch", "Checkout Branch"])
         self.tBar.addAction(self.gitmerge)
         self.tBar.addAction(self.gitclone)
+        self.tBar.addAction(self.gittree)
         self.tBar.addSeparator()
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -529,6 +532,9 @@ class myWindow(QMainWindow):
             QIcon("gitbranch.png"), "git branch", triggered=self.branch)
         self.gitclone = QAction(
             QIcon("icon\\gitclone.png"), "git clone", triggered=self.clone)
+        self.gittree = QAction(
+            QIcon('icon\\tree.png'), "git tree", triggered=self.tree
+        )
         #############################################################################################################################################################
         #############################################################################################################################################################
 
@@ -1344,6 +1350,37 @@ class myWindow(QMainWindow):
 
             # https: // github.com/KIMIS12/capstonIMAGEtest1.git
             # git clone https://사용자ID:개인액세스토큰@github.com/사용자ID/저장소이름.git
+
+    def tree(self):
+
+        class LineWidget(QWidget):
+            def __init__(self):
+                super().__init__()
+                self.initUI()
+                self.paintEvent()
+                self.draw_line()
+
+            def initUI(self):
+                self.setWindowTitle("git tree")
+                self.resize(500, 500)
+                self.show()
+
+            def paintEvent(self):
+                qp = QPainter()
+                qp.begin(self)
+                self.draw_line(qp)
+                return qp
+
+            def draw_line(self, qp):
+                qp.setPen(QPen(Qt.blue, 8))
+                qp.drawLine(30, 230, 200, 50)
+
+        # tmp = ["git tree"]
+        # app2 = QApplication()
+
+        widget = LineWidget()
+        # widget.show()
+        # sys.exit(app2.exec_())
 
     def initButtonPulse(self):
         index = self.listview.selectionModel().currentIndex()
