@@ -239,15 +239,27 @@ def git_parse_log(dir_path):
         if len(result_log[result_log_idx].split()) == 0:
             continue
         if 'commit' == result_log[result_log_idx].split()[0]:
-            commit_info = ''
-            num_parse_line = 5
+            
+            commit_info_coarse = ''
+            commit_info_fine = ''
+            idx_for_fine = 0
+
+            num_coarse_info = 5
             if 'Merge:' == result_log[result_log_idx + 1].split()[0]:
-                num_parse_line = 6
+                num_coarse_info = 6
+                idx_fine_info = 1
+
+            for parse_line in range(0, num_coarse_info):
+                commit_info_coarse += result_log[result_log_idx + parse_line] + '\n'
             
-            for parse_line in range(0, num_parse_line):
-                commit_info += result_log[result_log_idx + parse_line] + '\n'
-            
-            log_data.append(commit_info)
+
+            author_name = result_log[result_log_idx + idx_fine_info + 1].split(':')[1].split('<')[0].strip()
+            commit_message = result_log[result_log_idx + idx_fine_info + 4].strip()
+
+            commit_info_fine += 'Author: ' + author_name + '\n'
+            commit_info_fine += 'Commit Message: ' + commit_message
+
+            log_data.append((commit_info_coarse, commit_info_fine))
 
     return graph_data, log_data
 

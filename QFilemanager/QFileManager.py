@@ -1395,6 +1395,12 @@ class myWindow(QMainWindow):
                 super().__init__()
                 self.graph_data = graph_data
                 self.log_data = log_data
+                self.start_x = 230
+                self.start_y = 40
+                self.delta_x = 10
+                self.delta_y = 15
+                self.commit_button_width = 10
+                self.commit_button_hegiht = 15
                 self.initUI()
                 # self.paintEvent()
                 # self.draw_line()
@@ -1402,28 +1408,22 @@ class myWindow(QMainWindow):
             def initUI(self):
                 QToolTip.setFont(QFont('SansSerif', 10))
 
-                start_x = 230
-                start_y = 40
-                delta_x = 10
-                delta_y = 10
-                commit_circle_size = 4
-
                 log_data_idx = 0
-                curr_y = start_y
+                self.curr_y = self.start_y
                 for graph_line in self.graph_data:
-                    curr_x = start_x
+                    self.curr_x = self.start_x
                     for graph_symbol in graph_line:
                         if graph_symbol == '*':
                             # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
-                            btn = QPushButton('c', self)
-                            btn.setToolTip(self.log_data[log_data_idx])
+                            btn = QPushButton(' ', self)
+                            btn.setToolTip(self.log_data[log_data_idx][1])
                             btn.move(curr_x, curr_y)
-                            btn.resize(6, 6)
-
+                            btn.resize(commit_button_wdith, commit_button_height)
+                            btn.clicked.connect(lambda: self.commit_info_msgbox(self.log_data[log_data_idx][0]))
                             log_data_idx += 1
 
-                        curr_x += delta_x
-                    curr_y += delta_y
+                        curr_x += self.delta_x
+                    curr_y += self.delta_y
 
                 self.setWindowTitle("git tree")
                 self.resize(500, 500)
@@ -1432,37 +1432,29 @@ class myWindow(QMainWindow):
             def paintEvent(self, e):
                 qp = QPainter()
                 qp.begin(self)
-                self.draw_graph(qp)
+                self.draw_divergent_line(qp)
 
-            def draw_graph(self, qp):
+            def draw_divergent_line(self, qp):
                 # draws graph from top(latest commit) to bottom
-                start_x = 230
-                start_y = 40
-                delta_x = 15
-                delta_y = 30
-                commit_circle_size = 4
+                
                 qp.setPen(QPen(Qt.blue, 2))
                 qp.setBrush(QBrush(Qt.red, Qt.SolidPattern))
 
                 curr_y = start_y
                 for graph_line in self.graph_data:
-                    curr_x = start_x
+                    curr_x = self.start_x
                     for graph_symbol in graph_line:
-                        if graph_symbol == '*':
-                            # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
-                            btn = QPushButton('commit', self)
-                            btn.setToolTip('Hello')
-                            btn.move(curr_x, curr_y)
-                            btn.resize(btn.sizeHint())
                         elif graph_symbol == '|':
-                            qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
+                            qp.drawLine(curr_x, curr_y, curr_x, curr_y + self.delta_y)
                         elif graph_symbol == '/':
-                            qp.drawLine(curr_x, curr_y, curr_x - delta_x, curr_y + delta_y)
+                            qp.drawLine(curr_x, curr_y, curr_x - self.delta_x, curr_y + self.delta_y)
                         elif graph_symbol == '\\':
-                            qp.drawLine(curr_x, curr_y, curr_x + delta_x, curr_y + delta_y)
-                        curr_x += delta_x
-                    curr_y += delta_y
+                            qp.drawLine(curr_x, curr_y, curr_x + self.delta_x, curr_y + self.delta_y)
+                        curr_x += self.delta_x
+                    curr_y += self.delta_y
 
+            def commit_info_msgbox(log_data_coarse):
+                QMessageBox.information(self, 'Commit Info', log_data_coarse)
         # tmp = ["git tree"]
         # app2 = QApplication()
 
