@@ -72,6 +72,11 @@ When you right-click on each file, a menu corresponding to the git status of tha
 **4. refresh**
 Pressing F5 refreshes the git status.
 
+**5. [toolbar] git branch dropbox**
+You can select one of the following options (create branch, delete branch, rename branch, checkout branch) and execute it using the git branch button.
+
+
+
 ## commit convention
 Message format: [Commit type] [Message] [#Issue]
 
