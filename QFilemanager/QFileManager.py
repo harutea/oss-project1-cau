@@ -15,7 +15,7 @@ import socket
 import typing
 from PyQt5 import QtCore
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QComboBox
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QComboBox, QToolTip
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon, QPixmap
@@ -1403,6 +1403,7 @@ class myWindow(QMainWindow):
                 self.setWindowTitle("git tree")
                 self.resize(500, 500)
                 self.show()
+                QToolTip.setFont(QFont('SansSerif', 10))
 
             def paintEvent(self, e):
                 qp = QPainter()
@@ -1424,7 +1425,10 @@ class myWindow(QMainWindow):
                     curr_x = start_x
                     for graph_symbol in graph_line:
                         if graph_symbol == '*':
-                            qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
+                            # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
+                            btn = qp.QPushButton('commit', self)
+                            btn.setToolTip('Hello')
+                            btn.move(curr_x, curr_y)
                         elif graph_symbol == '|':
                             qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
                         elif graph_symbol == '/':
