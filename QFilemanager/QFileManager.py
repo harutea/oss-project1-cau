@@ -527,13 +527,13 @@ class myWindow(QMainWindow):
         self.gitcommit = QAction(
             QIcon("icons8-commit-git-64.png"), "git commit", triggered=self.commit)
         self.gitmerge = QAction(
-            QIcon("icon\\merge.png"), "git merge", triggered=self.merge)
+            QIcon("icon/merge.png"), "git merge", triggered=self.merge)
         self.gitbranch = QAction(
             QIcon("gitbranch.png"), "git branch", triggered=self.branch)
         self.gitclone = QAction(
-            QIcon("icon\\gitclone.png"), "git clone", triggered=self.clone)
+            QIcon("icon/gitclone.png"), "git clone", triggered=self.clone)
         self.gittree = QAction(
-            QIcon('icon\\tree.png'), "git tree", triggered=self.tree
+            QIcon("icon/tree.png"), "git tree", triggered=self.tree
         )
         #############################################################################################################################################################
         #############################################################################################################################################################
@@ -1119,7 +1119,7 @@ class myWindow(QMainWindow):
     #############################################################################################################################################################
     #############################################################################################################################################################
 
-    def handle_merged_branch_clicked(self):
+    def handle_merged__clicked(self):
         merged_branch = self.list_widget.currentItem().text()
         result = git_handler.git_merge(merged_branch)
         if "conflicts" in result:
@@ -1258,6 +1258,7 @@ class myWindow(QMainWindow):
                     errorBox.setStandardButtons(QMessageBox.Ok)
                     errorBox.setInformativeText("")
                     errorBox.exec()
+                git_handler.git_create_branch(self.currentPath, newname)
                 # print(newname)
                 # git_handler.git_branch(dir, path, newname)
                 # self.gitStatusList = git_handler.get_status_list(self.currentPath)
@@ -1299,6 +1300,7 @@ class myWindow(QMainWindow):
                         errorBox.setStandardButtons(QMessageBox.Ok)
                         errorBox.setInformativeText("")
                         errorBox.exec()
+                    git_handler.git_rename_branch(self.currentPath,newname)
                     print(newname)
             git_handler.git_checkout_branch(self.currentPath, temp)
             self.currentBranch = "Current Branch : " + \
@@ -1319,6 +1321,7 @@ class myWindow(QMainWindow):
                     errorBox.setStandardButtons(QMessageBox.Ok)
                     errorBox.setInformativeText("")
                     errorBox.exec()
+                git_handler.git_checkout_branch(self.currentPath,item)
                 self.currentBranch = "Current Branch : " + \
                     git_handler.git_show_branch_list(self.currentPath)[1]
                 self.setWindowTitle(self.currentBranch)
