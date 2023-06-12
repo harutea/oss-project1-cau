@@ -1407,7 +1407,7 @@ class myWindow(QMainWindow):
 
                 btn = QPushButton('commit', self)
                 btn.setToolTip('Hello')
-                btn.move(curr_x, curr_y)
+                btn.move(10, 10)
                 btn.resize(btn.sizeHint())
 
             def paintEvent(self, e):
