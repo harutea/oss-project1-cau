@@ -1415,7 +1415,7 @@ class myWindow(QMainWindow):
                 start_y = 40
                 delta_x = 10
                 delta_y = 20
-                current_y = start_y
+                curr_y = start_y
                 qp.setPen(QPen(Qt.blue, 8))
 
                 for graph_line in self.graph_data:
