@@ -1394,8 +1394,8 @@ class myWindow(QMainWindow):
         class LineWidget(QWidget):
             def __init__(self, graph_data):
                 super().__init__()
-                self.initUI()
                 self.graph_data = graph_data
+                self.initUI()
                 # self.paintEvent()
                 # self.draw_line()
 
