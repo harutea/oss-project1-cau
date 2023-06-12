@@ -1419,7 +1419,7 @@ class myWindow(QMainWindow):
                 qp.setPen(QPen(Qt.blue, 8))
 
                 for graph_line in self.graph_data:
-                    curr_x = start_pos  
+                    curr_x = start_x
                     for graph_symbol in graph_line:
                         if graph_symbol == '*' or graph_symbol == '|':
                             qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
