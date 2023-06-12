@@ -1405,6 +1405,11 @@ class myWindow(QMainWindow):
                 self.show()
                 QToolTip.setFont(QFont('SansSerif', 10))
 
+                btn = QPushButton('commit', self)
+                btn.setToolTip('Hello')
+                btn.move(curr_x, curr_y)
+                btn.resize(btn.sizeHint())
+
             def paintEvent(self, e):
                 qp = QPainter()
                 qp.begin(self)
@@ -1443,7 +1448,7 @@ class myWindow(QMainWindow):
         # app2 = QApplication()
 
         graph_data = git_handler.git_parse_log(self.currentPath)
-
+        
         global widget
         widget = LineWidget(graph_data)
         # widget.show()
