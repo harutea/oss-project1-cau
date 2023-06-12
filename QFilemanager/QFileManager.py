@@ -1393,19 +1393,40 @@ class myWindow(QMainWindow):
         class LineWidget(QWidget):
             def __init__(self, graph_data):
                 super().__init__()
-                self.initUI()
                 self.graph_data = graph_data
+                self.initUI()
                 # self.paintEvent()
                 # self.draw_line()
 
             def initUI(self):
                 QToolTip.setFont(QFont('SansSerif', 10))
 
-                btn = QPushButton('commit', self)
-                btn.setToolTip('Hello')
-                btn.move(10, 10)
-                btn.resize(btn.sizeHint())
-                
+                start_x = 230
+                start_y = 40
+                delta_x = 10
+                delta_y = 10
+                commit_circle_size = 4
+
+                curr_y = start_y
+                for graph_line in self.graph_data:
+                    curr_x = start_x
+                    for graph_symbol in graph_line:
+                        if graph_symbol == '*':
+                            # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
+                            btn = QPushButton('c', self)
+                            btn.setToolTip('Hello')
+                            btn.move(curr_x, curr_y)
+                            btn.resize(btn.sizeHint())
+                        
+                        # elif graph_symbol == '|':
+                        #     qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
+                        # elif graph_symbol == '/':
+                        #     qp.drawLine(curr_x, curr_y, curr_x - delta_x, curr_y + delta_y)
+                        # elif graph_symbol == '\\':
+                        #     qp.drawLine(curr_x, curr_y, curr_x + delta_x, curr_y + delta_y)
+                        curr_x += delta_x
+                    curr_y += delta_y
+
                 self.setWindowTitle("git tree")
                 self.resize(500, 500)
                 self.show()
@@ -1419,13 +1440,13 @@ class myWindow(QMainWindow):
                 # draws graph from top(latest commit) to bottom
                 start_x = 230
                 start_y = 40
-                delta_x = 10
-                delta_y = 10
+                delta_x = 15
+                delta_y = 30
                 commit_circle_size = 4
-                curr_y = start_y
                 qp.setPen(QPen(Qt.blue, 2))
                 qp.setBrush(QBrush(Qt.red, Qt.SolidPattern))
 
+                curr_y = start_y
                 for graph_line in self.graph_data:
                     curr_x = start_x
                     for graph_symbol in graph_line:
