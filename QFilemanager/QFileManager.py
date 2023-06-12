@@ -1391,9 +1391,10 @@ class myWindow(QMainWindow):
     def tree(self):
 
         class LineWidget(QWidget):
-            def __init__(self, graph_data):
+            def __init__(self, graph_data, log_data):
                 super().__init__()
                 self.graph_data = graph_data
+                self.log_data = log_data
                 self.initUI()
                 # self.paintEvent()
                 # self.draw_line()
@@ -1407,6 +1408,7 @@ class myWindow(QMainWindow):
                 delta_y = 10
                 commit_circle_size = 4
 
+                log_data_idx = 0
                 curr_y = start_y
                 for graph_line in self.graph_data:
                     curr_x = start_x
@@ -1414,16 +1416,12 @@ class myWindow(QMainWindow):
                         if graph_symbol == '*':
                             # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
                             btn = QPushButton('c', self)
-                            btn.setToolTip('Hello')
+                            btn.setToolTip(self.log_data[log_data_idx])
                             btn.move(curr_x, curr_y)
                             btn.resize(btn.sizeHint())
-                        
-                        # elif graph_symbol == '|':
-                        #     qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
-                        # elif graph_symbol == '/':
-                        #     qp.drawLine(curr_x, curr_y, curr_x - delta_x, curr_y + delta_y)
-                        # elif graph_symbol == '\\':
-                        #     qp.drawLine(curr_x, curr_y, curr_x + delta_x, curr_y + delta_y)
+
+                            log_data_idx += 1
+
                         curr_x += delta_x
                     curr_y += delta_y
 
@@ -1468,10 +1466,10 @@ class myWindow(QMainWindow):
         # tmp = ["git tree"]
         # app2 = QApplication()
 
-        graph_data = git_handler.git_parse_log(self.currentPath)
+        graph_data, log_data = git_handler.git_parse_log(self.currentPath)
         
         global widget
-        widget = LineWidget(graph_data)
+        widget = LineWidget(graph_data, log_data)
         # widget.show()
         # sys.exit(app2.exec_())
 

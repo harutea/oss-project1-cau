@@ -2,12 +2,20 @@ import os
 import datetime as dt
 
 class commitInfo:
-    def __init__(self, commit_message, author, when, diff, branch):
-        self.commit_message = commit_message
-        self.author = author # id
-        self.when = when
-        self.diff = diff # git diff --staged
-        self.branch = branch
+        def __init__(self, checksum, commit_message, author, when, diff):
+            self.checksum = checksum
+            self.commit_message = commit_message
+            self.author = author
+            self.when = when
+            self.diff = diff
+
+        def to_str()
+            result = ''
+            result += self.checksum + '\n'
+            result += self.commit_message + '\n'
+            result += self.author + '\n'
+            result += self.when + '\n'
+            result += self.diff + '\n'
 
 def git_status(dir_path):
     os.chdir(dir_path)
@@ -219,27 +227,41 @@ def git_merge(dir_path, to_be_merged):
 
 
 def git_parse_log(dir_path):
+    
     os.chdir(dir_path)
-    result = os.popen('git log --oneline --graph').read()
-    # result2 = os.popen('git log').read()
-    # print('result:', result)
+    result_graph = os.popen('git log --oneline --graph').read()
+    result_log = os.popen('git log').read()
     result = result.strip().split('\n')
 
     graph_symbol = ['*', '|', '/', '\\', ' ']
-    graph = []
+    graph_data = []
 
-    for result_line in result:
+    for result_graph_line in result_graph:
         # print('line :', result_line)
         graph_line = []
-        for result_symbol in result_line:
+        for result_symbol in result_graph_line:
             if result_symbol in graph_symbol:
                 graph_line.append(result_symbol)
             else:
                 break
         # print(graph_line)
-        graph.append(graph_line)
+        graph_data.append(graph_line)
 
-    return graph
+    log_data = []
+    
+    for result_log_idx in range(0, result_log):
+        if 'commit' == result_log[result_log_idx].split()[0]:
+            commit_info = ''
+            num_parse_line = 5
+            if 'Merge:' == result_log[result_log_idx + 1].split()[0]:
+                num_parse_line = 6
+            
+            for parse_line in range(0, num_parse_line):
+                commit_info += result_log[parse_line] + '\n'
+            
+            log_data.append(commit_info)
+
+    return graph_data, log_data
 
 
 def git_clone(dir_path, branch_name, id, token, url):
