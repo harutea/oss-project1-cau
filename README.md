@@ -77,7 +77,7 @@ You can select one of the following options (create branch, delete branch, renam
 - git branch drop box  
 ![git branch dropbox](./git_branch_dropbox.png)  
 - git branch button  
-![git branch button](./QFileManager/gitbranch.png)  
+![git branch button](./QFilemanager/gitbranch.png)  
 - create branch  
 ![create branch](./creat_branch.png)  
 - delete branch  
@@ -90,12 +90,12 @@ You can select one of the following options (create branch, delete branch, renam
   
 **6. [toolbar] git merge button**  
 When you press the button, a screen will appear where you can select the branch you want to merge. Once you make the selection, the merge will be executed.  
-![merge button](./QFileManager/icon/merge.png)  
+![merge button](./QFilemanager/icon/merge.png)  
 ![merge_branch_select](./merge_branch_select.png)  
 
 **7. [toolbar] git clone button**  
 When you press the button, it asks whether the repository you want to clone is public and prompts you to enter the repository address.  
-![git clone button](./QFileManager/icon/gitclone.png)  
+![git clone button](./QFilemanager/icon/gitclone.png)  
 ![git clone ask](./git_clone_ask.png)  
 ![git clone address](./git_clone_address.png)  
 
