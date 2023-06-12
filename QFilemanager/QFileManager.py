@@ -1410,8 +1410,8 @@ class myWindow(QMainWindow):
                 # draws graph from top(latest commit) to bottom
                 start_x = 230
                 start_y = 40
-                delta_x = 20
-                delta_y = 30
+                delta_x = 10
+                delta_y = 20
                 current_y = start_pos[1]
                 qp.setPen(QPen(Qt.blue, 8))
 
@@ -1420,9 +1420,9 @@ class myWindow(QMainWindow):
                     for graph_symbol in graph_line:
                         if graph_symbol == '*' or graph_symbol == '|':
                             qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
-                        if graph_symbol == '/':
+                        elif graph_symbol == '/':
                             qp.drawLine(curr_x, curr_y, curr_x - delta_x, curr_y + delta_y)
-                        if graph_symbol == '\\':
+                        elif graph_symbol == '\\':
                             qp.drawLine(curr_x, curr_y, curr_x + delta_x, curr_y + delta_y)
                         curr_x += delta_x
                     curr_y += delta_y
