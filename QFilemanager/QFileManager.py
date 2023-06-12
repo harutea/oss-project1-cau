@@ -1408,8 +1408,10 @@ class myWindow(QMainWindow):
             def initUI(self):
                 QToolTip.setFont(QFont('SansSerif', 10))
 
+
                 log_data_idx = 0
                 curr_y = self.start_y
+                list_a = [i for i in range(0, len(log_data))]
                 for graph_line in self.graph_data:
                     curr_x = self.start_x
                     for graph_symbol in graph_line:
@@ -1420,14 +1422,14 @@ class myWindow(QMainWindow):
                             btn.move(curr_x, curr_y)
                             btn.resize(self.commit_button_width, self.commit_button_height)
                             #print("length : ", len(log_data))
-                            #print("idx : ", log_data_idx)
-                            #print("idx_len : ", len(log_data[log_data_idx][0]))
-                            btn.clicked.connect(lambda: self.commit_info_msgbox(self.log_data[log_data_idx][0]))
+                            #print("log_type : ", type(log_data[1][0]))
+                            #print("idx_len : ", (self.log_data[1][0]))
+                            btn.clicked.connect(lambda: self.commit_info_msgbox(self.log_data[list_a[log_data_idx]][0]))
                             log_data_idx += 1
 
                         curr_x += self.delta_x
                     curr_y += self.delta_y
-
+                log_data_idx -= 1
                 self.setWindowTitle("git tree")
                 self.resize(500, 500)
                 self.show()
@@ -1456,7 +1458,7 @@ class myWindow(QMainWindow):
                         curr_x += self.delta_x
                     curr_y += self.delta_y
 
-            def commit_info_msgbox(log_data_coarse):
+            def commit_info_msgbox(self, log_data_coarse):
                 QMessageBox.information(self, 'Commit Info', log_data_coarse)
         # tmp = ["git tree"]
         # app2 = QApplication()
