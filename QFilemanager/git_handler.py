@@ -1,22 +1,6 @@
 import os
 import datetime as dt
 
-class commitInfo:
-        def __init__(self, checksum, commit_message, author, when, diff):
-            self.checksum = checksum
-            self.commit_message = commit_message
-            self.author = author
-            self.when = when
-            self.diff = diff
-
-        def to_str()
-            result = ''
-            result += self.checksum + '\n'
-            result += self.commit_message + '\n'
-            result += self.author + '\n'
-            result += self.when + '\n'
-            result += self.diff + '\n'
-
 def git_status(dir_path):
     os.chdir(dir_path)
     result = os.popen('git status').read()
@@ -231,8 +215,8 @@ def git_parse_log(dir_path):
     os.chdir(dir_path)
     result_graph = os.popen('git log --oneline --graph').read()
     result_log = os.popen('git log').read()
-    result = result.strip().split('\n')
-
+    result_graph = result_graph.split('\n')
+    result_log = result_log.split('\n')
     graph_symbol = ['*', '|', '/', '\\', ' ']
     graph_data = []
 
