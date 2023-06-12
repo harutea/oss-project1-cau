@@ -1409,9 +1409,9 @@ class myWindow(QMainWindow):
                 QToolTip.setFont(QFont('SansSerif', 10))
 
                 log_data_idx = 0
-                self.curr_y = self.start_y
+                curr_y = self.start_y
                 for graph_line in self.graph_data:
-                    self.curr_x = self.start_x
+                    curr_x = self.start_x
                     for graph_symbol in graph_line:
                         if graph_symbol == '*':
                             # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
@@ -1440,7 +1440,7 @@ class myWindow(QMainWindow):
                 qp.setPen(QPen(Qt.blue, 2))
                 qp.setBrush(QBrush(Qt.red, Qt.SolidPattern))
 
-                curr_y = start_y
+                curr_y = self.start_y
                 for graph_line in self.graph_data:
                     curr_x = self.start_x
                     for graph_symbol in graph_line:
