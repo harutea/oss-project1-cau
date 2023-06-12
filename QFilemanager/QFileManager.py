@@ -1400,15 +1400,16 @@ class myWindow(QMainWindow):
                 # self.draw_line()
 
             def initUI(self):
-                self.setWindowTitle("git tree")
-                self.resize(500, 500)
-                self.show()
                 QToolTip.setFont(QFont('SansSerif', 10))
 
                 btn = QPushButton('commit', self)
                 btn.setToolTip('Hello')
                 btn.move(10, 10)
                 btn.resize(btn.sizeHint())
+                
+                self.setWindowTitle("git tree")
+                self.resize(500, 500)
+                self.show()
 
             def paintEvent(self, e):
                 qp = QPainter()
