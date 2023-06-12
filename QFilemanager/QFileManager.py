@@ -18,7 +18,7 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QComboBox, QToolTip
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.Qt import QKeySequence, QCursor, QDesktopServices
 import findFilesWindow
 import QTextEdit
@@ -1429,6 +1429,7 @@ class myWindow(QMainWindow):
                             btn = qp.QPushButton('commit', self)
                             btn.setToolTip('Hello')
                             btn.move(curr_x, curr_y)
+                            btn.resize(btn.sizeHint())
                         elif graph_symbol == '|':
                             qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
                         elif graph_symbol == '/':
