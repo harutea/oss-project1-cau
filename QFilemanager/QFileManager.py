@@ -1412,6 +1412,7 @@ class myWindow(QMainWindow):
                 log_data_idx = 0
                 curr_y = self.start_y
                 list_a = [i for i in range(0, len(log_data))]
+                print(list_a)
                 for graph_line in self.graph_data:
                     curr_x = self.start_x
                     for graph_symbol in graph_line:
@@ -1424,7 +1425,7 @@ class myWindow(QMainWindow):
                             #print("length : ", len(log_data))
                             #print("log_type : ", type(log_data[1][0]))
                             #print("idx_len : ", (self.log_data[1][0]))
-                            btn.clicked.connect(lambda: self.commit_info_msgbox(self.log_data[list_a[log_data_idx]][0]))
+                            btn.clicked.connect(lambda ch, log_data_idx = log_data_idx: self.commit_info_msgbox(self.log_data[log_data_idx][0]))
                             log_data_idx += 1
 
                         curr_x += self.delta_x
