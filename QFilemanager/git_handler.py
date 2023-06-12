@@ -212,16 +212,22 @@ def git_merge(dir_path, to_be_merged):
 
 def git_parse_log(dir_path):
     os.chdir(dir_path)
-    result = os.popen('git log --oneline --graph').read().strip().split('\n')
+    result = os.popen('git log --oneline --graph').read()
+    print('result:', result)
+    result = result.strip().split('\n')
 
-    graph_symbol = ['*', '|', '/', '\\']
+    graph_symbol = ['*', '|', '/', '\\', ' ']
     graph = []
 
     for result_line in result:
+        print('line :', result_line)
         graph_line = []
         for result_symbol in result_line:
             if result_symbol in graph_symbol:
                 graph_line.append(result_symbol)
+            else:
+                break
+        print(graph_line)
         graph.append(graph_line)
 
     return graph
