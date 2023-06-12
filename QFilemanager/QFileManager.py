@@ -1413,8 +1413,8 @@ class myWindow(QMainWindow):
                 # draws graph from top(latest commit) to bottom
                 start_x = 230
                 start_y = 40
-                delta_x = 10
-                delta_y = 20
+                delta_x = 3
+                delta_y = 7
                 curr_y = start_y
                 qp.setPen(QPen(Qt.blue, 8))
 
