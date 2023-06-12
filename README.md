@@ -79,7 +79,7 @@ You can select one of the following options (create branch, delete branch, renam
 - git branch button  
 ![git branch button](./QFilemanager/gitbranch.png)  
 - create branch  
-![create branch](./creat_branch.png)  
+![create branch](./create_branch.png)  
 - delete branch  
 ![delete branch](./delete_branch.png)  
 - rename branch  
