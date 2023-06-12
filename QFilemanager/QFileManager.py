@@ -35,7 +35,7 @@ from send2trash import send2trash
 import git_handler
 from enum import Enum
 from git import repo
-from PyQt5.QtGui import QPainter, QPen,QBrush
+from PyQt5.QtGui import QPainter, QPen, QBrush
 from PyQt5.QtCore import Qt
 
 
@@ -1413,11 +1413,11 @@ class myWindow(QMainWindow):
                 # draws graph from top(latest commit) to bottom
                 start_x = 230
                 start_y = 40
-                delta_x = 3
-                delta_y = 7
-                commit_circle_size = 5
+                delta_x = 10
+                delta_y = 10
+                commit_circle_size = 4
                 curr_y = start_y
-                qp.setPen(QPen(Qt.blue, 8))
+                qp.setPen(QPen(Qt.blue, 2))
                 qp.setBrush(QBrush(Qt.red, Qt.SolidPattern))
 
                 for graph_line in self.graph_data:
