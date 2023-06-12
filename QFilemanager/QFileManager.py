@@ -35,7 +35,7 @@ from send2trash import send2trash
 import git_handler
 from enum import Enum
 from git import repo
-from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtGui import QPainter, QPen,QBrush
 from PyQt5.QtCore import Qt
 
 
