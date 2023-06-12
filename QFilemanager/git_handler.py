@@ -233,7 +233,7 @@ def git_parse_log(dir_path):
 
     log_data = []
     
-    for result_log_idx in range(0, result_log):
+    for result_log_idx in range(0, len(result_log)):
         if 'commit' == result_log[result_log_idx].split()[0]:
             commit_info = ''
             num_parse_line = 5
