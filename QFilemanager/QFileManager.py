@@ -1415,13 +1415,17 @@ class myWindow(QMainWindow):
                 start_y = 40
                 delta_x = 3
                 delta_y = 7
+                commit_circle_size = 5
                 curr_y = start_y
                 qp.setPen(QPen(Qt.blue, 8))
+                qp.setBrush(QBrush(Qt.red, Qt.SolidPattern))
 
                 for graph_line in self.graph_data:
                     curr_x = start_x
                     for graph_symbol in graph_line:
-                        if graph_symbol == '*' or graph_symbol == '|':
+                        if graph_symbol == '*':
+                            qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
+                        elif graph_symbol == '|':
                             qp.drawLine(curr_x, curr_y, curr_x, curr_y + delta_y)
                         elif graph_symbol == '/':
                             qp.drawLine(curr_x, curr_y, curr_x - delta_x, curr_y + delta_y)
