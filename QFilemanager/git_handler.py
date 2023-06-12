@@ -231,7 +231,7 @@ def git_parse_log(dir_path):
         # print(graph_line)
         graph.append(graph_line)
 
-    return graph, history_data
+    return graph
 
 
 def git_clone(dir_path, branch_name, id, token, url):
