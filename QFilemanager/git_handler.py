@@ -241,6 +241,7 @@ def git_clone(dir_path, branch_name, id, token, url):
     username = f"{id}"
     password = f"{token}"
     repo_name = url.split("//")[-1]
+    repo_name_final = repo_name.split('/')[-1]
     remote = f"https://{username}:{password}@{repo_name}"
     print("remote : " + remote)
 
@@ -249,7 +250,7 @@ def git_clone(dir_path, branch_name, id, token, url):
     #os.popen('git clone '+'https://' + id +
     #         '@' + repo_name)
     if 'Repository not found.' in os.popen('git ls-remote '+ remote).read():
-        Repo.clone_from(remote, dir_path)
+        Repo.clone_from(remote, dir_path + repo_name_final)
         return True
     else:
         return False
