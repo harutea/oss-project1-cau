@@ -1418,7 +1418,7 @@ class myWindow(QMainWindow):
                             btn = QPushButton('c', self)
                             btn.setToolTip(self.log_data[log_data_idx])
                             btn.move(curr_x, curr_y)
-                            btn.resize(btn.sizeHint())
+                            btn.resize(6, 6)
 
                             log_data_idx += 1
 

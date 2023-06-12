@@ -236,7 +236,7 @@ def git_parse_log(dir_path):
     for result_log_idx in range(0, len(result_log)):
         if result_log_idx >= len(result_log)-1:
             break 
-        if len(result_log[result_log_idx].split()) == 0 :
+        if len(result_log[result_log_idx].split()) == 0:
             continue
         if 'commit' == result_log[result_log_idx].split()[0]:
             commit_info = ''
@@ -245,7 +245,7 @@ def git_parse_log(dir_path):
                 num_parse_line = 6
             
             for parse_line in range(0, num_parse_line):
-                commit_info += result_log[parse_line] + '\n'
+                commit_info += result_log[result_log_idx + parse_line] + '\n'
             
             log_data.append(commit_info)
 
