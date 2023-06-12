@@ -1426,7 +1426,7 @@ class myWindow(QMainWindow):
                     for graph_symbol in graph_line:
                         if graph_symbol == '*':
                             # qp.drawEllipse(curr_x, curr_y, commit_circle_size, commit_circle_size)
-                            btn = qp.QPushButton('commit', self)
+                            btn = QPushButton('commit', self)
                             btn.setToolTip('Hello')
                             btn.move(curr_x, curr_y)
                             btn.resize(btn.sizeHint())
