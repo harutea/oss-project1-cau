@@ -242,7 +242,7 @@ def git_parse_log(dir_path):
             
             commit_info_coarse = ''
             commit_info_fine = ''
-            idx_for_fine = 0
+            idx_fine_info = 0
 
             num_coarse_info = 5
             if 'Merge:' == result_log[result_log_idx + 1].split()[0]:

@@ -1397,10 +1397,10 @@ class myWindow(QMainWindow):
                 self.log_data = log_data
                 self.start_x = 230
                 self.start_y = 40
-                self.delta_x = 10
-                self.delta_y = 15
-                self.commit_button_width = 10
-                self.commit_button_hegiht = 15
+                self.delta_x = 15
+                self.delta_y = 10
+                self.commit_button_width = 15
+                self.commit_button_height = 10
                 self.initUI()
                 # self.paintEvent()
                 # self.draw_line()
@@ -1418,7 +1418,10 @@ class myWindow(QMainWindow):
                             btn = QPushButton(' ', self)
                             btn.setToolTip(self.log_data[log_data_idx][1])
                             btn.move(curr_x, curr_y)
-                            btn.resize(commit_button_wdith, commit_button_height)
+                            btn.resize(self.commit_button_width, self.commit_button_height)
+                            #print("length : ", len(log_data))
+                            #print("idx : ", log_data_idx)
+                            #print("idx_len : ", len(log_data[log_data_idx][0]))
                             btn.clicked.connect(lambda: self.commit_info_msgbox(self.log_data[log_data_idx][0]))
                             log_data_idx += 1
 
@@ -1444,7 +1447,7 @@ class myWindow(QMainWindow):
                 for graph_line in self.graph_data:
                     curr_x = self.start_x
                     for graph_symbol in graph_line:
-                        elif graph_symbol == '|':
+                        if graph_symbol == '|':
                             qp.drawLine(curr_x, curr_y, curr_x, curr_y + self.delta_y)
                         elif graph_symbol == '/':
                             qp.drawLine(curr_x, curr_y, curr_x - self.delta_x, curr_y + self.delta_y)
