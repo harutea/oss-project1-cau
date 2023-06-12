@@ -1,5 +1,13 @@
 import os
+import datetime as dt
 
+class commitInfo:
+    def __init__(self, commit_message, author, when, diff, branch):
+        self.commit_message = commit_message
+        self.author = author # id
+        self.when = when
+        self.diff = diff # git diff --staged
+        self.branch = branch
 
 def git_status(dir_path):
     os.chdir(dir_path)

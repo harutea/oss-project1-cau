@@ -81,7 +81,6 @@ def gitstatus(file_list, file_name):
 
     return result
 
-
 class statusQFileSystemModel(QFileSystemModel):
     def __init__(self):
         super(statusQFileSystemModel, self).__init__()
