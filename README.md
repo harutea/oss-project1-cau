@@ -101,7 +101,7 @@ When you press the button, it asks whether the repository you want to clone is p
 
 **8. [toolbar] git commit history button**  
 When you press the button, the Git commit history appears. When you hover over a button in the Git commit history, brief information is displayed, and when you click the button, detailed information corresponding to each commit is shown.  
-![git commit history button](./QFilemnanger/icon/tree.png)  
+![git commit history button](./QFilemanager/icon/tree.png)  
 ![git commit history image](./git_commit_history.png)  
 
 ## commit convention
