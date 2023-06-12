@@ -13,7 +13,8 @@ sudo apt install python3
 sudo apt install python3-pip  
 pip3 install PyQt5  
 pip3 install PyQtWebEngine  
-pip3 install send2trash  
+pip3 install send2trash
+pip install GitPython
 sudo apt-get install --reinstall libxcb-xinerama0 
 
 sudo apt install git  
